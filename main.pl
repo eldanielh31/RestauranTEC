@@ -10,6 +10,7 @@
 % Version de Archivo		: 0.1
 % Autores					: GitHub@angelortizv, GitHub@jesquivel48, GitHub@isolis2000
 % Úlitma Modificacion		: 07/09/2019, 16:00, @angelortizv
+%Hola como esras?
 
 :-consult('application_db').
 :-style_check(-singleton).
