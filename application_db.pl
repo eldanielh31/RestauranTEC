@@ -103,6 +103,7 @@ sustantivo_m([archivos|S],S).
 sustantivo_m([papel|S],S).
 sustantivo_m([problema|S],S).
 
+
 % Descripción		:	sustantivos femeninos
 % Nombre de Hecho	:	sustantivo_f([X])
 % Parámetro			:	sustantivos femeninos
@@ -147,6 +148,11 @@ verbo([esta,lento|S],S).
 verbo([tiene|S],S).
 verbo([tiene,conexion|S],S).
 verbo([imprime|S],S).
+
+
+verbo([comer|S], S).
+verbo([tomar|S], S).
+
 
 
 % Lista de Problemas,Causas,Soluciones,Preguntas y Referencias ----------------------------------------------------------------------------
