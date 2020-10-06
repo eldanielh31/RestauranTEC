@@ -2,4 +2,5 @@
 miembro(X,[X|_]).
 miembro(X,[_|T]):-miembro(X,T).
 
-pene([grueso, venudo, largo]).
+pene(grueso, venudo, largo).
+

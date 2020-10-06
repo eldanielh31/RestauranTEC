@@ -39,6 +39,6 @@ inicio():-
     %write('Escribe'),
     %nl,
     %read(A),
-    buscarResta(comida_rapida , hamburguesas, conQueso, cartago, 10, Nombre, Direccion),
+    buscarResta(comida_rapida , hamburguesas, conQueso, cartago, 4, Nombre, Direccion),
     write(Nombre),nl,
     write(Direccion).
