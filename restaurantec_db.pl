@@ -1,22 +1,31 @@
 %Restaurantes disponibles en la app
 %formato: [nombre, tipoMenu, [menu], [direccion], [capacidad], [disposiciones]]
-Terrestaurante(mcdonald, comida_rapida, [sanjose, 'metrocentro'], 4, 'el uso de mascarilla obligatorio').
-restaurante(pizzahut, italiana, [cartago, 'ruinar'], 5, 'el uso de mascarilla obligatorio').
-restaurante(tejarena, comida_rapida, [cartago, 'tejar'], 10, 'el uso de mascarilla obligatorio').
+restaurante(mcdonald, comida_rapida, [sanjose, 'Plaza del Sol'], 30, 'el uso de mascarilla obligatorio').
 restaurante(woods, italiana, [sanjose, 'curridabat'], 20, 'el uso de mascarilla obligatorio').
+restaurante(tacobell, mexicana, [sanjose, 'San Pedro'], 30, 'el uso de mascarilla obligatorio').
+
+restaurante(mcdonald, comida_rapida, [cartago, 'MetroCentro'], 30, 'el uso de mascarilla obligatorio').
+restaurante(pizzahut, italiana, [cartago, 'ruinas'], 5, 'el uso de mascarilla obligatorio').
+restaurante(tejarena, comida_rapida, [cartago, 'tejar'], 10, 'el uso de mascarilla obligatorio').
+restaurante(tacobell, mexicana, [cartago, '100mts norte de las ruinas'], 30, 'el uso de mascarilla obligatorio').
+restaurante(yokohama, japonesa, [cartago, 'Plaza Boulevard, Blvd. el Molino, Provincia de Cartago, Cartago'], 20, 'el uso de mascarilla obligatorio').
 
 %tipos menu
 %formato: (tipo comida, [sabores])
 menu(hamburguesas, [mcdonald, tejarena], [conQueso, dobleTorta, vegana]).
 
-menu(pizza, [pizzahut], [hongos, jamon]).
-menu(pizza, [woods], [hongos, jamon, hawaiana]).
+menu(tacos, [tacobell], [simple, doble]).
+
+menu(sushi, [yokohama], [tempura, soba, domburi, niguiri]).
+
+menu(pizza, [pizzahut, woods], [hongos, jamon, hawaiana, brasilena, margarita]).
 
 menu(calzone, [pizzahut, woods], [tomate, pina]).
 
 menu(papas, [mcdonald, tejarena], [grandes, pequenas]).
 
-menu(refresco, [woods, pizzahut, mcdonald, tejarena], [cocaCola, sevenUp, uva]).
+menu(refresco, [tacobell, yokohama, woods, pizzahut, mcdonald, tejarena], [cocaCola, sevenUp, uva, pepsi, fresa, cas]).
+menu(refresco, [yokohama, woods], [cerveza, cervezaArtesanal, vino]).
 
 %aperaciones basicas
 miembro(X,[X|_]).
@@ -40,7 +49,8 @@ crearReferencia(Nombre, Direccion, Obligaciones):-
     write(Obligaciones).
 
 inicio():-
-    %write('Escribe'),
-    %nl,
-    %read(A),
-    buscarResta(comida_rapida , hamburguesas, conQueso, cartago, 10),
+    write('Menu'),
+    nl, read(M), write('Comida'), nl, read(Co), write('Tipo Comida'), nl,
+    read(TC), write('tipo comida'), nl, read(TC),write('Lugar'),
+    nl, read(L), write('Cantidad'), nl, read(C), 
+    buscarResta(M , Co, TC, L, C).
