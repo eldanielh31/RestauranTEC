@@ -1,15 +1,15 @@
 %Restaurantes disponibles en la app
 %formato: [nombre, tipoMenu, [direccion], [capacidad], [disposiciones]]
-restaurante(mcdonald, comida_rapida, [sanjose, 'Plaza del Sol'], 30, 'el uso de mascarilla obligatorio').
-restaurante(woods, italiana, [sanjose, 'curridabat'], 20, 'el uso de mascarilla obligatorio').
-restaurante(tacobell, mexicana, [sanjose, 'San Pedro'], 30, 'el uso de mascarilla obligatorio').
+restaurante(mcdonald, [comida_rapida, [sanjose, 'Plaza del Sol'], 30, 'el uso de mascarilla obligatorio']).
+restaurante(woods, [italiana, [sanjose, 'curridabat'], 20, 'el uso de mascarilla obligatorio']).
+restaurante(tacobell, [mexicana, [sanjose, 'San Pedro'], 30, 'el uso de mascarilla obligatorio']).
 
-restaurante(autogrill, bar, [cartago, 'Mall Paseo Metropoli'], 40, 'el uso de mascarilla obligatorio').
-restaurante(mcdonald, comida_rapida, [cartago, 'MetroCentro'], 30, 'el uso de mascarilla obligatorio').
-restaurante(pizzahut, italiana, [cartago, 'ruinas'], 5, 'el uso de mascarilla obligatorio').
-restaurante(tejarena, comida_rapida, [cartago, 'tejar'], 10, 'el uso de mascarilla obligatorio').
-restaurante(tacobell, mexicana, [cartago, '100mts norte de las ruinas'], 30, 'el uso de mascarilla obligatorio').
-restaurante(yokohama, japonesa, [cartago, 'Plaza Boulevard, Blvd. el Molino, Provincia de Cartago, Cartago'], 20, 'el uso de mascarilla obligatorio').
+restaurante(autogrill, [bar, [cartago, 'Mall Paseo Metropoli'], 40, 'el uso de mascarilla obligatorio']).
+restaurante(mcdonald, [comida_rapida, [cartago, 'MetroCentro'], 30, 'el uso de mascarilla obligatorio']).
+restaurante(pizzahut, [italiana, [cartago, 'ruinas'], 5, 'el uso de mascarilla obligatorio']).
+restaurante(tejarena, [comida_rapida, [cartago, 'tejar'], 10, 'el uso de mascarilla obligatorio']).
+restaurante(tacobell, [mexicana, [cartago, '100mts norte de las ruinas'], 30, 'el uso de mascarilla obligatorio']).
+restaurante(yokohama, [japonesa, [cartago, 'Plaza Boulevard, Blvd. el Molino, Provincia de Cartago, Cartago'], 20, 'el uso de mascarilla obligatorio']).
 
 %tipos menu
 %formato: (tipo comida, [restaurantes], [sabores])
