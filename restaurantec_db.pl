@@ -31,7 +31,7 @@ restaurante(tacobell, mexicana, [puntarenas, 'Plaza La Rioja'], 30, 'el uso de m
 restaurante(wingshun,china,[puntarenas, 'Centro de la capital'],20,'el uso de mascarilla obligatorio').
 
 %Heredia
-restaurante(mcdonald, comida_rapida, [heredia, 'Oxigeno Human Playground'], 30, 'el uso de mascarilla obligatorio').
+restaurante(mcdonald, comida_rapida, [herjkedia, 'Oxigeno Human Playground'], 30, 'el uso de mascarilla obligatorio').
 restaurante(pizzahut, italiana, [heredia, 'Mall Paseo de Las Flores'], 20, 'el uso de mascarilla obligatorio').
 restaurante(mariscosymas, mariscos, [heredia, 'Entrada principal de la UNA 100 oeste y 25 Sur'], 30, 'el uso de mascarilla obligatorio').
 restaurante(kfc, comida_rapida,[heredia, 'Mall Paseo de Las Flores'],20,'el uso de mascarilla obligatorio').
@@ -112,7 +112,8 @@ buscarResta(TipoMenu, Comida, TipoComida, Lugar, Capacidad):-
     menu(Comida, LNombre, T),
     miembro(Nombre, LNombre),
     miembro(TipoComida, T),
-    crearReferencia(Nombre, Direccion, Obligaciones), !.
+    crearReferencia(Nombre, Direccion, Obligaciones), !,
+    write('No se encuentra ningun restaurante con estas caracteristicas :(. Lo sentimos').
 
 crearReferencia(Nombre, Direccion, Obligaciones):-
     write('Nuestra sugerencia es '),
