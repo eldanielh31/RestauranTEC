@@ -13,16 +13,25 @@ restaurante(yokohama, [japonesa, [cartago, 'Plaza Boulevard, Blvd. el Molino, Pr
 
 %tipos menu
 %formato: (tipo comida, [restaurantes], [sabores])
-menu(hamburguesas, [mcdonald, tejarenam, autogrill], [simple, conQueso, dobleTorta, vegana]).
+menu(hamburguesas, [mcdonald, tejarena, autogrill], [simple, conQueso, dobleTorta, vegana]).
 menu(hamburguesas, [autogrill], [artesanal]).
 menu(hamburguesa, [mcdonald, tejarenam, autogrill], [simple, conQueso, dobleTorta, vegana]).
 menu(hamburguesa, [autogrill], [artesanal]).
 
+menu(arroz,[hongkong,linfei,wingshun,china-garden,yongxin,meywah,lungfung],[chino,conPollo,cantones]).
+
+menu(pollo, [kfc,rostipollos], [crispy, frito]).
+menu(pollos, [kfc,rostipollos], [crispy, frito]).
+
+menu(pescado,[fishy,marisqueando,mariscosymas,limonta,reina,rancho],[fileteado, empanizado, crispy]).
+menu(ceviche,[fishy,marisqueando,mariscosymas,limonta,reina,rancho],[conLimon]).
+
 menu(tacos, [tacobell, autogrill], [simple, doble]).
+menu(taco, [tacobell, autogrill], [simple, doble]).
 
 menu(nachos, [tacobell, autogrill, tejarena], [simple, res, pollo, combinado]).
 
-menu(sushi, [yokohama], [tempura, soba, domburi, niguiri]).
+menu(sushi, [yokohama,matsuri,cos-ita], [tempura, soba, domburi, niguiri]).
 
 menu(pizza, [pizzahut, woods], [hongos, jamon, hawaiana, brasilena, margarita]).
 
@@ -44,7 +53,8 @@ buscarResta(TipoMenu, Comida, TipoComida, Lugar, Capacidad):-
     menu(Comida, LNombre, T),
     miembro(Nombre, LNombre),
     miembro(TipoComida, T),
-    crearReferencia(Nombre, Direccion, Obligaciones), !.
+    crearReferencia(Nombre, Direccion, Obligaciones), !,
+    write('No se encuentra ningun restaurante con estas caracteristicas :(. Lo sentimos').
 
 crearReferencia(Nombre, Direccion, Obligaciones):-
     write('Nuestra sugerencia es '),
