@@ -120,13 +120,13 @@ sustantivo_f([bebidas|S],S).
 % Uso				:	sintagma_nominal([A],[B])
 
 sustantivo_l([san,pedro|S],S).
-sustantivo_l([san,pedro|S],S).
-sustantivo_l([san,pedro|S],S).
-sustantivo_l([san,pedro|S],S).
-sustantivo_l([san,pedro|S],S).
-sustantivo_l([san,pedro|S],S).
-sustantivo_l([san,pedro|S],S).
-sustantivo_l([san,pedro|S],S).
+sustantivo_l([san,jose|S],S).
+sustantivo_l([cartago|S],S).
+sustantivo_l([puntarenas|S],S).
+sustantivo_l([heredia|S],S).
+sustantivo_l([guanacaste|S],S).
+sustantivo_l([alajuela|S],S).
+sustantivo_l([limon|S],S).
 /*
 sustantivo_l([hamburguesas|S],S).
 sustantivo_l([pizza|S],S).
