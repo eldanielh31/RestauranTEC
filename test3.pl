@@ -81,21 +81,64 @@ determinante_n([yo|S],S).
 negacion([no|S],S).
 negacion([nunca|S],S).
 
-% Descripción		:	sustantivos masculinos
-% Nombre de Hecho	:	sustantivo_m([X])
-% Parámetro			:	sustantivos masculinos
+% Descripción		:	sustantivo general
+% Nombre de Hecho	:	sustantivo_g([X])
+% Parámetro			:	sustantivo general (anónimo)
 % Uso				:	sintagma_nominal([A],[B])
-sustantivo_m([sushi|S],S).
-sustantivo_m([pescado|S],S).
-sustantivo_m([pescados|S],S).
-sustantivo_m([nacho|S],S).
-sustantivo_m([nachos|S],S).
-sustantivo_m([taco|S],S).
-sustantivo_m([tacos|S],S).
-sustantivo_m([calzone|S],S).
-sustantivo_m([calzones|S],S).
-sustantivo_m([refresco|S],S).
-sustantivo_m([refrescos|S],S).
+sustantivo_g([_|S],S).
+
+/*
+    sustantivo_m([arroz|S],S).
+    sustantivo_m([arroz, chino|S],S).
+    sustantivo_m([arroz, con, pollo|S],S).
+    sustantivo_m([arroz, cantones|S],S).
+
+    sustantivo_m([pollo|S],S).
+    sustantivo_m([pollo, crispy|S],S).
+    sustantivo_m([pollo, frito|S],S).
+    sustantivo_m([pollos|S],S).
+    sustantivo_m([pollos, crispy|S],S).
+    sustantivo_m([pollos, frito|S],S).
+
+    sustantivo_m([pescado|S],S).
+    sustantivo_m([pescado, fileteado|S],S).
+    sustantivo_m([pescado, empanizado|S],S).
+    sustantivo_m([pescados|S],S).
+    sustantivo_m([pescados, fileteado|S],S).
+    sustantivo_m([pescados, empanizado|S],S).
+
+    sustantivo_m([ceviche|S],S).
+    sustantivo_m([ceviche, con, limon|S],S).
+
+    sustantivo_m([taco|S],S).
+    sustantivo_m([taco, simple|S],S).
+    sustantivo_m([taco, doble|S],S).
+    sustantivo_m([tacos|S],S).
+    sustantivo_m([tacos, simple|S],S).
+    sustantivo_m([tacos, doble|S],S).
+
+    sustantivo_m([nacho|S],S).
+    sustantivo_m([nacho, simple|S],S).
+    sustantivo_m([nacho, con, res|S],S).
+    sustantivo_m([nacho, con, pollo|S],S).
+    sustantivo_m([nacho, combinado|S],S).
+    sustantivo_m([nachos|S],S).
+    sustantivo_m([nachos, simple|S],S).
+    sustantivo_m([nachos, con, res|S],S).
+    sustantivo_m([nachos, con, pollo|S],S).
+    sustantivo_m([nachos, combinado|S],S).
+
+    sustantivo_m([sushi|S],S).
+    sustantivo_m([sushi, tempura|S],S).
+    sustantivo_m([sushi, soba|S],S).
+    sustantivo_m([sushi, domburi|S],S).
+    sustantivo_m([sushi, niguiri|S],S).
+
+    sustantivo_m([calzone|S],S).
+    sustantivo_m([calzone, con, tomate|S],S).
+    sustantivo_m([calzone, con, pina|S],S).
+    sustantivo_m([calzones|S],S).
+*/
 
 
 % Descripción		:	sustantivos femeninos
@@ -103,41 +146,70 @@ sustantivo_m([refrescos|S],S).
 % Parámetro			:	sustantivos femeninos
 % Uso				:	sintagma_nominal([A],[B])
 
-sustantivo_f([hamburguesa|S],S).
-sustantivo_f([hamburguesas|S],S).
-sustantivo_f([pizza|S],S).
-sustantivo_f([pizzas|S],S).
-sustantivo_f([pasta|S],S).
-sustantivo_f([pastas|S],S).
-sustantivo_f([papa|S],S).
-sustantivo_f([papas|S],S).
-sustantivo_f([bebida|S],S).
-sustantivo_f([bebidas|S],S).
+/*
+    sustantivo_f([hamburguesa|S],S).
+    sustantivo_f([hamburguesa, simple|S],S).
+    sustantivo_f([hamburguesa, con ,queso|S],S).
+    sustantivo_f([hamburguesa, doble|S],S).
+    sustantivo_f([hamburguesa, vegana|S],S).
+    sustantivo_f([hamburguesas|S],S).
+    sustantivo_f([hamburguesas, simple|S],S).
+    sustantivo_f([hamburguesas, con ,queso|S],S).
+    sustantivo_f([hamburguesas, doble|S],S).
+    sustantivo_f([hamburguesas, vegana|S],S).
+
+    sustantivo_f([pizza|S],S).
+    sustantivo_f([pizza, con, hongos|S],S).
+    sustantivo_f([pizza, con, jamon|S],S).
+    sustantivo_f([pizza, hawaiana|S],S).
+    sustantivo_f([pizza, brasilena|S],S).
+    sustantivo_f([pizza, margarita|S],S).
+    sustantivo_f([pizzas|S],S).
+    sustantivo_f([pizzas, con, hongos|S],S).
+    sustantivo_f([pizzas, con, jamon|S],S).
+    sustantivo_f([pizzas, hawaiana|S],S).
+    sustantivo_f([pizzas, brasilena|S],S).
+    sustantivo_f([pizzas, margarita|S],S).
+
+    sustantivo_f([papa|S],S).
+    sustantivo_f([papa, pequena|S],S).
+    sustantivo_f([papa, grande|S],S).
+    sustantivo_f([papas|S],S).
+    sustantivo_f([papas, pequena|S],S).
+    sustantivo_f([papas, grande|S],S).
+*/
+
+% Descripción		:	sustantivos de bebidas
+% Nombre de Hecho	:	sustantivo_b([X])
+% Parámetro			:	sustantivos de bebida
+% Uso				:	sintagma_nominal([A],[B])
+
+/*
+    sustantivo_b([coca, cola|S],S).
+    sustantivo_b([seven, up|S],S).
+    sustantivo_b([sprite|S],S).
+    sustantivo_b([ginger, ale|S],S).
+    sustantivo_b([zarza|S],S).
+    sustantivo_b([te, frio|S],S).
+    sustantivo_b([te, con, limon|S],S).
+    sustantivo_b([agua|S],S).
+*/
 
 % Descripción		:	sustantivos de lugar
 % Nombre de Hecho	:	sustantivo_l([X])
 % Parámetro			:	sustantivos de lugar
 % Uso				:	sintagma_nominal([A],[B])
 
-sustantivo_l([san,pedro|S],S).
-sustantivo_l([san,jose|S],S).
-sustantivo_l([cartago|S],S).
-sustantivo_l([puntarenas|S],S).
-sustantivo_l([heredia|S],S).
-sustantivo_l([guanacaste|S],S).
-sustantivo_l([alajuela|S],S).
-sustantivo_l([limon|S],S).
 /*
-sustantivo_l([hamburguesas|S],S).
-sustantivo_l([pizza|S],S).
-sustantivo_l([pizzas|S],S).
-sustantivo_l([pasta|S],S).
-sustantivo_l([pastas|S],S).
-sustantivo_l([papa|S],S).
-sustantivo_l([papas|S],S).
-sustantivo_l([bebida|S],S).
-sustantivo_l([bebidas|S],S).
+    sustantivo_l([san,jose|S],S).
+    sustantivo_l([cartago|S],S).
+    sustantivo_l([puntarenas|S],S).
+    sustantivo_l([heredia|S],S).
+    sustantivo_l([guanacaste|S],S).
+    sustantivo_l([alajuela|S],S).
+    sustantivo_l([limon|S],S).
 */
+
 
 % Descripción		:
 % Nombre de Hecho	:	inicio causa_ref([X])
@@ -155,8 +227,10 @@ verbo([comer|S], S).
 verbo([tomar|S], S).
 verbo([beber|S], S).
 verbo([quiero|S],S).
+verbo([queremos|S],S).
 verbo([quiero,comer|S],S).
 verbo([quiero,tomar|S],S).
+verbo([quiero,beber|S],S).
 verbo([queremos,comer|S],S).
 verbo([queremos,tomar|S],S).
 verbo([queremos,beber|S],S).
@@ -215,29 +289,29 @@ oracion(A,B):-
     %sintagma_verbal(C,B).
 
 /*
-oracion(A,B):-
-    sintagma_nominal(A,C),
-    sintagma_verbal(C,B).
-	%sintagma_nominal(A,C).
+    oracion(A,B):-
+        sintagma_nominal(A,C),
+        sintagma_verbal(C,B).
+        %sintagma_nominal(A,C).
 
 
 
-oracion(A,B):-
-	sintagma_nominal(A,C),
-	sintagma_verbal(C,B).
-oracion(A,B):-
-	sintagma_nominal(A,C),
-	negacion(C,D),
-	sintagma_verbal(D,B).
-oracion(A,B):-
-	inicio_cr(A,C),
-	sintagma_nominal(C,D),
-	sintagma_verbal(D,B).
-oracion(A,B):-
-	inicio_cr(A,C),
-	sintagma_nominal(C,D),
-	negacion(D,E),
-	sintagma_verbal(E,B).
+    oracion(A,B):-
+        sintagma_nominal(A,C),
+        sintagma_verbal(C,B).
+    oracion(A,B):-
+        sintagma_nominal(A,C),
+        negacion(C,D),
+        sintagma_verbal(D,B).
+    oracion(A,B):-
+        inicio_cr(A,C),
+        sintagma_nominal(C,D),
+        sintagma_verbal(D,B).
+    oracion(A,B):-
+        inicio_cr(A,C),
+        sintagma_nominal(C,D),
+        negacion(D,E),
+        sintagma_verbal(E,B).
 */
 
 % Descripción		:	recibe una lista de palabras y una lista vacía; elimina el primer sintagma nominal encontrado y devuelve el resto de las palabras
@@ -245,48 +319,39 @@ oracion(A,B):-
 % Parámetro			:	lista a revisar y lista vacía
 % Uso				:	se utiliza para encontrar el primer sintagma nominal en una lista de palabras
 
-/*
-% Tipos de comida
+
+% Tipos de restaurante, comida, bebida, lugar
 sintagma_nominal(A,B):-
     determinante_m(A,C),
     verbo(C,Z),
-	sustantivo_m(Z,B).
+	sustantivo_g(Z,B).
 sintagma_nominal(A,B):-
     determinante_f(A,C),
     verbo(C,Z),
-	sustantivo_f(Z,B).
+	sustantivo_g(Z,B).
 sintagma_nominal(A,B):-
     determinante_n(A,C),
     verbo(C,Z),
-	sustantivo_f(Z,B).
-sintagma_nominal(A,B):-
-    determinante_n(A,C),
-    verbo(C,Z),
-	sustantivo_m(Z,B).
-
+	sustantivo_g(Z,B).
 sintagma_nominal(A,B):-
     determinante_n(A,C),
     verbo(C,Z),
     determinante_m(Z,Y),
-	sustantivo_m(Y,B).
+	sustantivo_g(Y,B).
 sintagma_nominal(A,B):-
     determinante_n(A,C),
     verbo(C,Z),
     determinante_f(Z,Y),
-	sustantivo_f(Y,B).
-sintagma_nominal(A,B):-
-    verbo(A,Z),
-	sustantivo_m(Z,B).
-sintagma_nominal(A,B):-
-    verbo(A,Z),
-	sustantivo_f(Z,B).
-*/
-
-% Lugar deseado
+	sustantivo_g(Y,B).
 sintagma_nominal(A,B):-
     determinante_n(A,C),
     verbo(C,Z),
-	sustantivo_l(Z,B).
+	sustantivo_g(Z,B).
+sintagma_nominal(A,B):-
+    verbo(A,C),
+	sustantivo_g(C,B).
+sintagma_nominal(A,B):-
+	verbo(A,B).
 
 
 % Descripción		:	recibe una lista de palabras y una lista vacía; elimina el primer sintagma verbal encontrado y devuelve el resto de las palabras
