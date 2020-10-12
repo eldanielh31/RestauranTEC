@@ -12,7 +12,7 @@
 % Úlitma Modificacion		: 07/09/2019, 16:00, @angelortizv
 
 
-%:-consult('restaurantec_db').
+%:-consult('restaurantec_db.pl').
 :- discontiguous miembro/2.
 
 % Palabras Clave de Usuario ---------------------------------------------------------------------------------------------------------------
@@ -52,6 +52,7 @@ nombre_programa([callCenter|S],S).
 % Nombre de Hecho	:	determinante_m(X)
 % Parámetro			:	determinantes masculinos
 % Uso				:	sintagma_nominal([A],[B])
+
 determinante_m([el|S],S).
 determinante_m([lo|S],S).
 determinante_m([los|S],S).
@@ -62,6 +63,7 @@ determinante_m([unos|S],S).
 % Nombre de Hecho	:	determinante_f([X])
 % Parámetro			:	determinantes femeninos
 % Uso				:	sintagma_nominal([A],[B])
+
 determinante_f([la|S],S).
 determinante_f([las|S],S).
 determinante_f([una|S],S).
@@ -71,152 +73,16 @@ determinante_f([unas|S],S).
 % Nombre de Hecho	:	determinante_n([X])
 % Parámetro			:	determinantes neutros
 % Uso				:	sintagma_nominal([A],[B])
+
 determinante_n([nosotros|S],S).
 determinante_n([yo|S],S).
 
-% Descripción		:	Negaciones
-% Nombre de Hecho	:	negacion([X])
-% Parámetro			:	adverbios de negacion
-% Uso				:	oracion([A],[B])
-negacion([no|S],S).
-negacion([nunca|S],S).
-
-% Descripción		:	sustantivo general
+% Descripción		:	Sustantivos
 % Nombre de Hecho	:	sustantivo_g([X])
 % Parámetro			:	sustantivo general (anónimo)
 % Uso				:	sintagma_nominal([A],[B])
+
 sustantivo_g([_|S],S).
-
-/*
-    sustantivo_m([arroz|S],S).
-    sustantivo_m([arroz, chino|S],S).
-    sustantivo_m([arroz, con, pollo|S],S).
-    sustantivo_m([arroz, cantones|S],S).
-
-    sustantivo_m([pollo|S],S).
-    sustantivo_m([pollo, crispy|S],S).
-    sustantivo_m([pollo, frito|S],S).
-    sustantivo_m([pollos|S],S).
-    sustantivo_m([pollos, crispy|S],S).
-    sustantivo_m([pollos, frito|S],S).
-
-    sustantivo_m([pescado|S],S).
-    sustantivo_m([pescado, fileteado|S],S).
-    sustantivo_m([pescado, empanizado|S],S).
-    sustantivo_m([pescados|S],S).
-    sustantivo_m([pescados, fileteado|S],S).
-    sustantivo_m([pescados, empanizado|S],S).
-
-    sustantivo_m([ceviche|S],S).
-    sustantivo_m([ceviche, con, limon|S],S).
-
-    sustantivo_m([taco|S],S).
-    sustantivo_m([taco, simple|S],S).
-    sustantivo_m([taco, doble|S],S).
-    sustantivo_m([tacos|S],S).
-    sustantivo_m([tacos, simple|S],S).
-    sustantivo_m([tacos, doble|S],S).
-
-    sustantivo_m([nacho|S],S).
-    sustantivo_m([nacho, simple|S],S).
-    sustantivo_m([nacho, con, res|S],S).
-    sustantivo_m([nacho, con, pollo|S],S).
-    sustantivo_m([nacho, combinado|S],S).
-    sustantivo_m([nachos|S],S).
-    sustantivo_m([nachos, simple|S],S).
-    sustantivo_m([nachos, con, res|S],S).
-    sustantivo_m([nachos, con, pollo|S],S).
-    sustantivo_m([nachos, combinado|S],S).
-
-    sustantivo_m([sushi|S],S).
-    sustantivo_m([sushi, tempura|S],S).
-    sustantivo_m([sushi, soba|S],S).
-    sustantivo_m([sushi, domburi|S],S).
-    sustantivo_m([sushi, niguiri|S],S).
-
-    sustantivo_m([calzone|S],S).
-    sustantivo_m([calzone, con, tomate|S],S).
-    sustantivo_m([calzone, con, pina|S],S).
-    sustantivo_m([calzones|S],S).
-*/
-
-
-% Descripción		:	sustantivos femeninos
-% Nombre de Hecho	:	sustantivo_f([X])
-% Parámetro			:	sustantivos femeninos
-% Uso				:	sintagma_nominal([A],[B])
-
-/*
-    sustantivo_f([hamburguesa|S],S).
-    sustantivo_f([hamburguesa, simple|S],S).
-    sustantivo_f([hamburguesa, con ,queso|S],S).
-    sustantivo_f([hamburguesa, doble|S],S).
-    sustantivo_f([hamburguesa, vegana|S],S).
-    sustantivo_f([hamburguesas|S],S).
-    sustantivo_f([hamburguesas, simple|S],S).
-    sustantivo_f([hamburguesas, con ,queso|S],S).
-    sustantivo_f([hamburguesas, doble|S],S).
-    sustantivo_f([hamburguesas, vegana|S],S).
-
-    sustantivo_f([pizza|S],S).
-    sustantivo_f([pizza, con, hongos|S],S).
-    sustantivo_f([pizza, con, jamon|S],S).
-    sustantivo_f([pizza, hawaiana|S],S).
-    sustantivo_f([pizza, brasilena|S],S).
-    sustantivo_f([pizza, margarita|S],S).
-    sustantivo_f([pizzas|S],S).
-    sustantivo_f([pizzas, con, hongos|S],S).
-    sustantivo_f([pizzas, con, jamon|S],S).
-    sustantivo_f([pizzas, hawaiana|S],S).
-    sustantivo_f([pizzas, brasilena|S],S).
-    sustantivo_f([pizzas, margarita|S],S).
-
-    sustantivo_f([papa|S],S).
-    sustantivo_f([papa, pequena|S],S).
-    sustantivo_f([papa, grande|S],S).
-    sustantivo_f([papas|S],S).
-    sustantivo_f([papas, pequena|S],S).
-    sustantivo_f([papas, grande|S],S).
-*/
-
-% Descripción		:	sustantivos de bebidas
-% Nombre de Hecho	:	sustantivo_b([X])
-% Parámetro			:	sustantivos de bebida
-% Uso				:	sintagma_nominal([A],[B])
-
-/*
-    sustantivo_b([coca, cola|S],S).
-    sustantivo_b([seven, up|S],S).
-    sustantivo_b([sprite|S],S).
-    sustantivo_b([ginger, ale|S],S).
-    sustantivo_b([zarza|S],S).
-    sustantivo_b([te, frio|S],S).
-    sustantivo_b([te, con, limon|S],S).
-    sustantivo_b([agua|S],S).
-*/
-
-% Descripción		:	sustantivos de lugar
-% Nombre de Hecho	:	sustantivo_l([X])
-% Parámetro			:	sustantivos de lugar
-% Uso				:	sintagma_nominal([A],[B])
-
-/*
-    sustantivo_l([san,jose|S],S).
-    sustantivo_l([cartago|S],S).
-    sustantivo_l([puntarenas|S],S).
-    sustantivo_l([heredia|S],S).
-    sustantivo_l([guanacaste|S],S).
-    sustantivo_l([alajuela|S],S).
-    sustantivo_l([limon|S],S).
-*/
-
-
-% Descripción		:
-% Nombre de Hecho	:	inicio causa_ref([X])
-% Parámetro			:
-% Uso				:
-inicio_cr([posibles,causas,del,problema|S],S).
-inicio_cr([algunas,referencias,para,el,problema|S],S).
 
 % Descripción		:	Verbos
 % Nombre de Hecho	:	verbo([X])
@@ -244,8 +110,9 @@ verbo([queremos,algo,cerca,de|S],S).
 verbo([queremos,estar,alrededor,de|S],S).
 verbo([queremos,algo,alrededor,de|S],S).
 
-
-
+verbo([seria|S], S).
+verbo([seriamos|S], S).
+verbo([somos|S], S).
 
 
 
@@ -286,90 +153,59 @@ verbo([queremos,algo,alrededor,de|S],S).
 
 oracion(A,B):-
     sintagma_nominal(A,C).
-    %sintagma_verbal(C,B).
 
-/*
-    oracion(A,B):-
-        sintagma_nominal(A,C),
-        sintagma_verbal(C,B).
-        %sintagma_nominal(A,C).
-
-
-
-    oracion(A,B):-
-        sintagma_nominal(A,C),
-        sintagma_verbal(C,B).
-    oracion(A,B):-
-        sintagma_nominal(A,C),
-        negacion(C,D),
-        sintagma_verbal(D,B).
-    oracion(A,B):-
-        inicio_cr(A,C),
-        sintagma_nominal(C,D),
-        sintagma_verbal(D,B).
-    oracion(A,B):-
-        inicio_cr(A,C),
-        sintagma_nominal(C,D),
-        negacion(D,E),
-        sintagma_verbal(E,B).
-*/
 
 % Descripción		:	recibe una lista de palabras y una lista vacía; elimina el primer sintagma nominal encontrado y devuelve el resto de las palabras
 % Nombre de Regla	:	sintagma_nominal([A],[B])
 % Parámetro			:	lista a revisar y lista vacía
 % Uso				:	se utiliza para encontrar el primer sintagma nominal en una lista de palabras
 
-
-% Tipos de restaurante, comida, bebida, lugar
 sintagma_nominal(A,B):-
     determinante_m(A,C),
-    verbo(C,Z),
+    sintagma_verbal(C,Z),
 	sustantivo_g(Z,B).
 sintagma_nominal(A,B):-
     determinante_f(A,C),
-    verbo(C,Z),
+    sintagma_verbal(C,Z),
 	sustantivo_g(Z,B).
 sintagma_nominal(A,B):-
     determinante_n(A,C),
-    verbo(C,Z),
+    sintagma_verbal(C,Z),
 	sustantivo_g(Z,B).
 sintagma_nominal(A,B):-
     determinante_n(A,C),
-    verbo(C,Z),
+    sintagma_verbal(C,Z),
     determinante_m(Z,Y),
 	sustantivo_g(Y,B).
 sintagma_nominal(A,B):-
     determinante_n(A,C),
-    verbo(C,Z),
+    sintagma_verbal(C,Z),
     determinante_f(Z,Y),
 	sustantivo_g(Y,B).
 sintagma_nominal(A,B):-
     determinante_n(A,C),
-    verbo(C,Z),
+    sintagma_verbal(C,Z),
 	sustantivo_g(Z,B).
 sintagma_nominal(A,B):-
-    verbo(A,C),
-	sustantivo_g(C,B).
+	sintagma_verbal(A,C),
+    sustantivo_g(C,B).
 sintagma_nominal(A,B):-
-	verbo(A,B).
+    sintagma_verbal(A,B).
 
 
 % Descripción		:	recibe una lista de palabras y una lista vacía; elimina el primer sintagma verbal encontrado y devuelve el resto de las palabras
 % Nombre de Regla	:	sintagma_verbal([A],[B])
 % Parámetro			:	lista a revisar y lista vacía
 % Uso				:	se utiliza para encontrar el primer sintagma verbal en una lista de palabras
+
 sintagma_verbal(A,B):-
 	verbo(A,B).
-
-sintagma_verbal(A,B):-
-	verbo(A,C),
-	sintagma_nominal(C,B).
-
 
 % Descripción		:	recibe una lista de palabras y una lista vacía y verifica si estas palabras componen un saludo al programa (Ej. “hola log”)
 % Nombre de Regla	:	sintagma_saludo([B])
 % Parámetro			:	lista a revisar y lista vacía
 % Uso				:	se utiliza para encontrar el primer sintagma saludo en una lista de palabras
+
 sintagma_saludo(B):-
 	input_to_list(L),
 	saludo(L,C),
@@ -567,14 +403,140 @@ removehead([_|Tail], Tail).
 
 
 
-restaurante([tacobell, wjdwdbnewd, daddad, adae]).
-restaurante([mcdonald, edef, edecew, dscewc]).
 
 
-listaRestaurantes(L) :- findall(X, (restaurante([X|_])), L).
+
+
+%******************************************************************************
+%******************************************************************************
+%******************************************************************************
+
+
+%Restaurantes disponibles en la app
+%formato: [nombre, tipoMenu, [direccion], [capacidad], [disposiciones]]
+
+%San Jose
+restaurante([mcdonald, rapida, [sanjose, 'Plaza del Sol'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([woods, italiana, [sanjose, 'Curridabat'], 20, 'el uso de mascarilla obligatorio']).
+restaurante([tacobell, mexicana, [sanjose, 'San Pedro'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([kfc, rapida,[sanjose, 'San Pedro'],20,'el uso de mascarilla obligatorio']).
+restaurante([marisqueando, mariscos,[sanjose, 'Centro de Desamparados'],20,'el uso de mascarilla obligatorio']).
+restaurante([hongkong,china,[sanjose, 'Moravia'],20,'el uso de mascarilla obligatorio']).
+restaurante([yokohama, japonesa, [sanjose, '200 mts al oeste de la Universidad de Costa Rica'], 20, 'el uso de mascarilla obligatorio']).
+
+%Cartaguito campeon
+restaurante([autogrill, bar, [cartago, 'Mall Paseo Metropoli'], 40, 'el uso de mascarilla obligatorio']).
+restaurante([mcdonald, rapida, [cartago, 'MetroCentro'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([pizzahut, italiana, [cartago, 'ruinas'], 5, 'el uso de mascarilla obligatorio']).
+restaurante([tejarena, rapida, [cartago, 'tejar'], 10, 'el uso de mascarilla obligatorio']).
+restaurante([tacobell, mexicana, [cartago, '100mts norte de las Ruinas'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([yokohama, japonesa, [cartago, 'Plaza Boulevard, Blvd. el Molino, Provincia de Cartago, Cartago'], 20, 'el uso de mascarilla obligatorio']).
+restaurante([kfc, rapida,[cartago, '50 mts al sur de las Ruinas'],20,'el uso de mascarilla obligatorio']).
+restaurante([linfei,china,[cartago, '200 mts al este de la Basilica de Los Angeles'],20,'el uso de mascarilla obligatorio']).
+
+%Puntarenas
+restaurante([mcdonald, rapida, [puntarenas, 'Plaza Centenario'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([rostipollos, rapida, [puntarenas, 'Hotel Alamar'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([pizzahut, italiana, [puntarenas, 'Ocean Mall'], 20, 'el uso de mascarilla obligatorio']).
+restaurante([fishy, mariscos, [puntarenas, 'Parque Mora'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([kfc, rapida,[puntarenas, 'Puntarenas Down Town'],20,'el uso de mascarilla obligatorio']).
+restaurante([yokohama, japonesa, [puntarenas, 'Puntarenas Down Town'],20,'el uso de mascarilla obligatorio']).
+restaurante([tacobell, mexicana, [puntarenas, 'Plaza La Rioja'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([wingshun,china,[puntarenas, 'Centro de la capital'],20,'el uso de mascarilla obligatorio']).
+
+%Heredia
+restaurante([mcdonald, rapida, [heredia, 'Oxigeno Human Playground'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([pizzahut, italiana, [heredia, 'Mall Paseo de Las Flores'], 20, 'el uso de mascarilla obligatorio']).
+restaurante([mariscosymas, mariscos, [heredia, 'Entrada principal de la UNA 100 oeste y 25 Sur'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([kfc, rapida,[heredia, 'Mall Paseo de Las Flores'],20,'el uso de mascarilla obligatorio']).
+restaurante([yokohama, japonesa, [heredia, 'Contiguo Al AYA De San Pablo 112, Heredia, San Pablo'],20,'el uso de mascarilla obligatorio']).
+restaurante([tacobell, mexicana, [heredia, 'Mall Paseo de Las Flores'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([lungfung,china,[heredia, 'Limón, Heredia'],20,'el uso de mascarilla obligatorio']).
+
+%Alajuela
+restaurante([mcdonald, rapida, [alajuela, 'Diagonal Bomba Provincia de Alajuela La Tropicana, Provincia de Alajuela'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([pizzahut, italiana, [alajuela, 'Provincia de Alajuela, Alajuela'], 20, 'el uso de mascarilla obligatorio']).
+restaurante([limonta, mariscos, [alajuela, 'Avenida 6 y calle 5, casa esquinera mano derecha Alajuela'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([kfc, rapida,[alajuela, 'Cruce calle 2 Obispo Tristán y avenida 10 Jesús Ocaña'],20,'el uso de mascarilla obligatorio']).
+restaurante([matsuri, japonesa, [alajuela, 'Tropicana, Provincia de Alajuela, Alajuela'],20,'el uso de mascarilla obligatorio']).
+restaurante([tacobell, mexicana, [alajuela, 'Provincia de Alajuela, Alajuela'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([meywah,china,[alajuela, 'Av. 3 Tomás Guardia, Provincia de Alajuela, Alajuela'],20,'el uso de mascarilla obligatorio']).
+
+%Guanacaste
+restaurante([mcdonald, rapida, [guanacaste, 'Carretera Interamericana Esq, Av. Central, Provincia de Guanacaste, Liberia'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([pizzahut, italiana, [guanacaste, 'Provincia de Guanacaste, Santa Cruz'], 20, 'el uso de mascarilla obligatorio']).
+restaurante([reina, mariscos, [guanacaste, 'Provincia de Guanacaste, Curime'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([kfc, rapida,[guanacaste, 'Diagonal a Plaza Santa Rosa, Liberia, Guanacaste, Provincia de Guanacaste, Liberia'],20,'el uso de mascarilla obligatorio']).
+restaurante([cos-ita, japonesa, [guanacaste, 'Parada de Buses Samara - San Jose, 160, Provincia de Guanacaste, Sámara'],20,'el uso de mascarilla obligatorio']).
+restaurante([tacobell, mexicana, [guanacaste, 'Limonal, Provincia de Guanacaste, La Palma'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([yongxin,china,[guanacaste, 'Provincia de Guanacaste, Liberia'],20,'el uso de mascarilla obligatorio']).
+
+%Limon
+restaurante([mcdonald, rapida, [limon, 'Calle 8, Limon'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([pizzahut, italiana, [limon, 'Av 2, Limón'], 20, 'el uso de mascarilla obligatorio']).
+restaurante([rancho, mariscos, [limon, 'Unnamed Road, Liman, Guapiles'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([kfc, rapida,[limon, 'Centro de Limon'],20,'el uso de mascarilla obligatorio']).
+restaurante([tacobell, mexicana, [limon, 'Carr Braulio Carrillo, Limon, Guapiles'], 30, 'el uso de mascarilla obligatorio']).
+restaurante([china-garden,china,[limon, 'Pocora, Limon, sobre ruta 32, 100 este de Almacenes El Colono de, Limon, Pocora'],20,'el uso de mascarilla obligatorio']).
+
+
+%tipos menu
+%formato: (tipo comida, [restaurantes], [sabores])
+menu([hamburguesas, [mcdonald, tejarena, autogrill], [simple, conQueso, dobleTorta, vegana]]).
+menu([hamburguesas, [autogrill], [artesanal]]).
+
+menu([arroz,[hongkong,linfei,wingshun,china-garden,yongxin,meywah,lungfung],[chino,conPollo,cantones]]).
+
+menu([pollo, [kfc,rostipollos], [crispy, frito]]).
+menu([pollos, [kfc,rostipollos], [crispy, frito]]).
+
+menu([pescado,[fishy,marisqueando,mariscosymas,limonta,reina,rancho],[fileteado, empanizado, crispy]]).
+menu([pescados,[fishy,marisqueando,mariscosymas,limonta,reina,rancho],[fileteado, empanizado, crispy]]).
+
+menu([ceviche,[fishy,marisqueando,mariscosymas,limonta,reina,rancho],[conLimon]]).
+menu([ceviches,[fishy,marisqueando,mariscosymas,limonta,reina,rancho],[conLimon]]).
+
+menu([taco, [tacobell, autogrill], [simple, doble]]).
+menu([tacos, [tacobell, autogrill], [simple, doble]]).
+
+menu([nacho, [tacobell, autogrill, tejarena], [simple, res, pollo, combinado]]).
+menu([nachos, [tacobell, autogrill, tejarena], [simple, res, pollo, combinado]]).
+
+menu([sushi, [yokohama,matsuri,cos-ita], [tempura, soba, domburi, niguiri]]).
+
+menu([pizza, [pizzahut, woods], [hongos, jamon, hawaiana, brasilena, margarita]]).
+menu([pizzas, [pizzahut, woods], [hongos, jamon, hawaiana, brasilena, margarita]]).
+
+menu([calzone, [pizzahut, woods], [tomate, pina]]).
+menu([calzones, [pizzahut, woods], [tomate, pina]]).
+
+menu([papa, [mcdonald, tejarena], [grandes, pequenas]]).
+menu([papas, [mcdonald, tejarena], [grandes, pequenas]]).
+
+bebida([cocaCola, [tacobell, yokohama, woods, pizzahut, mcdonald, tejarena]]).
+bebida([sevenUp, [tacobell, yokohama, woods, pizzahut, mcdonald, tejarena]]).
+bebida([uva, [tacobell, yokohama, woods, pizzahut, mcdonald, tejarena]]).
+bebida([pepsi, [tacobell, yokohama, woods, pizzahut, mcdonald, tejarena]]).
+bebida([fresa, [tacobell, yokohama, woods, pizzahut, mcdonald, tejarena]]).
+bebida([cas, [tacobell, yokohama, woods, pizzahut, mcdonald, tejarena]]).
+bebida([cerveza, [yokohama, woods]]).
+bebida([artesanal, [yokohama, woods]]).
+bebida([vino, [yokohama, woods]]).
+bebida([sangria, [yokohama, woods]]).
+
+
+
+%******************************************************************************
+%******************************************************************************
+%******************************************************************************
+
+
 
 miembro(X,[X|_]).
 miembro(X,[_|T]):-miembro(X,T).
+
+% Se buscan los restaurantes 
+listaRestaurantes(L) :- findall(X, (restaurante([X|_])), L).
 
 compareRest([],X):- X = 'no hay restaurante'.
 compareRest([H|_], X):- listaRestaurantes(L),
@@ -583,13 +545,54 @@ compareRest([H|T], X):- listaRestaurantes(L),
 	                    \+miembro(H,L),
 	                    compareRest(T,X).
 
+% Se buscan las comidas
+listaComidas(L) :- findall(X, (menu([X|_])), L).
+
+compareComida([],X):- X = 'no hay comida'.
+compareComida([H|_], X):- listaComidas(L),
+		                  miembro(H,L) , X = H, !.
+compareComida([H|T], X):- listaComidas(L),
+	                      \+miembro(H,L),
+	                      compareComida(T,X).
+
+% Se buscan los refrescos
+listaBebidas(L) :- findall(X, (bebida([X|_])) , L).
+
+compareBebida([],X):- X = 'no hay refresco'.
+compareBebida([H|_], X):- listaBebidas(L),
+		                  miembro(H,L) , X = H, !.
+compareBebida([H|T], X):- listaBebidas(L),
+	                      \+miembro(H,L),
+	                      compareBebida(T,X).
+
+% Se buscan los lugares
+listaLugar(L) :- findall(X, (restaurante([_,_,X,_,_])) , L).
+
+compareLugarAux([H|_], X):- listaLugar(L),
+						    flatten(L,Y),
+						    X = Y.
+
+compareLugar([],X):- X = 'no hay lugar'.
+compareLugar([H|_], X):- compareLugarAux(C, Y),
+		                 miembro(H,Y) , X = H, !.
+compareLugar([H|T], X):- compareLugarAux(C, Y),
+	                     \+miembro(H,Y),
+	                     compareLugar(T,X).
+
+% Se busca la cantidad
+listaCantidad(Cantidad) :- numlist(1, 40, Cs),
+							atom_codes(A,Cs),
+							atomic_list_concat(Cantidad,' ',A).	
 
 
-getRest(NombreRest,Y):- not(restaurante([NombreRest|_])),
-                        Y = 'no hay restaurante',
-                        !.
-getRest(NombreRest, Y):-restaurante([NombreRest|_]),
-                        Y = NombreRest.
+
+
+compareCantidad([],X):- X = 'no hay campo'.
+compareCantidad([H|_], X):- listaCantidad(L), writeln(L), writeln(H),
+		                    miembro(H,L) , X = H, !.
+compareCantidad([H|T], X):- listaCantidad(L),
+	                        \+miembro(H,L),
+	                        compareCantidad(T,X).
 
 
 start(Y):-
@@ -597,16 +600,73 @@ start(Y):-
     oracion(X,[]),
     Y = X.
 
-iniciar():-
-    respuesta_saludo(),  
-    input_to_list(Oracion),
-    % Se busca el restaurante
-    compare(Oracion, Rest),
-    X = Rest.
+iniciar(A,B,C,D,E):- 
+	/*
+	% Se busca el restaurante
+	input_to_list(Oracion),
+    compareRest(Oracion, Rest),
+	A = Rest,
+	% Se busca la comida
+	input_to_list(Oracion2),
+	compareComida(Oracion2, Comida),
+	B = Comida,
+	% Se busca la bebida
+	input_to_list(Oracion3),
+	compareBebida(Oracion3, Bebida),
+	C = Bebida,
+	% Se busca el lugar
+	input_to_list(Oracion4),
+	compareLugar(Oracion4, Lugar),
+	D = Lugar,
+	*/
+	% Se busca la cantidad
+	input_to_list(Oracion5),
+	compareCantidad(Oracion5, Cantidad),
+	E = Cantidad.
 
 
 
 
+
+%******************************************************************************
+%******************************************************************************
+%******************************************************************************
+
+
+%aperaciones basicas
+%miembro(X,[X|_]).
+%miembro(X,[_|T]):-miembro(X,T).
+
+%busca el mejor restaurante segun los parametros dados.
+buscarResta(TipoMenu, Comida, TipoComida, Lugar, Capacidad):-
+    restaurante(Nombre, TipoMenu, [Lugar | Direccion], RCapacidad, Obligaciones),
+    Capacidad =< RCapacidad,
+    menu(Comida, LNombre, T),
+    miembro(Nombre, LNombre),
+    miembro(TipoComida, T),
+    crearReferencia(Nombre, Direccion, Obligaciones), !,
+    write('No se encuentra ningun restaurante con estas caracteristicas :(. Lo sentimos').
+
+crearReferencia(Nombre, Direccion, Obligaciones):-
+    write('Nuestra sugerencia es '),
+    write(Nombre),
+    write( '. Su direccion es: '),
+    write(Direccion),
+    write('. Tenga en cuenta que para ingresar '),
+    write(Obligaciones).
+
+inicio():-
+    write('Menu'), nl, read(M),
+    write('Comida'), nl, read(Co), 
+    write('Tipo Comida'), nl, read(TC),
+    write('Lugar'), nl, read(L), 
+    write('Cantidad'), nl, read(C), 
+    buscarResta(M , Co, TC, L, C), !.
+
+
+
+%************************************************
+%************************************************
 
 
 ?- write(' '),nl.

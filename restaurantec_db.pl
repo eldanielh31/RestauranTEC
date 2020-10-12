@@ -101,8 +101,8 @@ menu(refresco, [tacobell, yokohama, woods, pizzahut, mcdonald, tejarena], [cocaC
 menu(refresco, [yokohama, woods], [cerveza, cervezaArtesanal, vino, sangria]).
 
 %aperaciones basicas
-miembro(X,[X|_]).
-miembro(X,[_|T]):-miembro(X,T).
+%miembro(X,[X|_]).
+%miembro(X,[_|T]):-miembro(X,T).
 
 %busca el mejor restaurante segun los parametros dados.
 buscarResta(TipoMenu, Comida, TipoComida, Lugar, Capacidad):-
