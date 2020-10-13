@@ -12,39 +12,7 @@
 % Úlitma Modificacion		: 07/09/2019, 16:00, @angelortizv
 
 
-%:-consult('restaurantec_db.pl').
 :- discontiguous miembro/2.
-
-% Palabras Clave de Usuario ---------------------------------------------------------------------------------------------------------------
-
-% Descripción		:	Inicio de una Conversacion
-% Nombre de Hecho	:	saludo([X])
-% Parámetro			:	palabra clave de saludo
-% Uso				:	sintagma_saludo([B])
-saludo([hola|S],S).
-saludo([saludos|S],S).
-saludo([disculpe|S],S).
-saludo([buenos,dias|S],S).
-saludo([buenas,tardes|S],S).
-saludo([buenas,noches|S],S).
-
-% Descripción		:	Fin de una Conversacion
-% Nombre de Hecho	:	despedida([X])
-% Parámetro			:	palabra clave de despedida
-% Uso				:	sintagma_saludo([B])
-despedida([gracias|S],S).
-despedida([muchas,gracias|S],S).
-despedida([adios|S],S).
-despedida([hasta_luego|S],S).
-despedida([chao|S],S).
-
-% Descripción		:	Nombre del Programa
-% Nombre de Hecho	:	nombre_programa([X])
-% Parámetro			:	nombre del Sistema Experto
-% Uso				:	sintagma_saludo([B])
-nombre_programa([callCenterLog|S],S).
-nombre_programa([log|S],S).
-nombre_programa([callCenter|S],S).
 
 % Palabras Clave para el BNF --------------------------------------------------------------------------------------------------------------
 
@@ -222,31 +190,13 @@ sintagma_saludo(B):-
 validacion_gramatical(Oracion):-
     oracion(Oracion,[]),
 	!.
-validacion_gramatical(Oracion):-
-	is_list(Oracion),
-	lista_vacia(Oracion,true),
-	writeln('En que lo puedo ayudar?'),nl,
-	%inicio_aux(),
-	!.
+
 validacion_gramatical(Oracion):-
 	writeln('Oracion gramaticalmente incorrecta #1'),
 	writeln('Escriba de nuevo su oracion #1'),nl,
-	%inicio_aux(),
-    false,
-	!.
+	input_to_list(Oracion2),
+	validacion_gramatical(Oracion2).
 
-respuesta_saludo():-
-	write('Hola '),
-	%writeln(Nombre),
-	writeln('En que lo puedo ayudar?').
-
-respuesta_despedida():-
-	writeln('Algo mas en que pueda servirle?'),nl,
-	read(R),
-	opcion_despedida(R).
-opcion_despedida(R):-
-	consulta_general(no,R),nl,writeln('Gracias por preferirnos'),nl,!;
-	inicio_aux().
 
 % Operaciones Basicas ------------------------------------------------------------------------------------------------------------
 
@@ -261,108 +211,20 @@ input_to_list(L):-
 	read_line_to_codes(user_input,Cs),
 	atom_codes(A,Cs),
 	atomic_list_concat(L,' ',A).
+
 input_to_string(A):-
 	read_line_to_codes(user_input,Cs),
 	atom_codes(A,Cs).
+
 list_to_string(List, String):-
 	atomic_list_concat(List, ' ', String).
 
-concatenar([],L,L).
-concatenar([X|L1],L2,[X|L3]):-
-	concatenar(L1,L2,L3).
+string_to_list_of_atoms(X,L):-
+	atom_codes(X,A),
+	atomic_list_concat(L,' ',X).
 
-eliminar_primeros(L,Y,B):- length(X, B), append(X,Y,L).
-
-obtener_elemento([Y|_], 1, Y).
-obtener_elemento([_|Xs], N, Y):-
-          N2 is N - 1,
-          obtener_elemento(Xs, N2, Y).
-
-
-% Causas y referencias --------------------------------------------------------------------------------------------------------------------
-
-% Descripción		:	Obtiene las causas a un determinado problema
-% Nombre de Regla	:	obtener_causas(X,A)
-% Parámetro			:	problema definido en application_db
-% Uso				:
-obtener_causas(X,A):-
-	split_string(A, "', ,?" ,"', ,?", L),
-	eliminar_primeros(L,Y,4),
-	atomic_list_concat(Y, ' ', X),
-	causas(X).
-
-causas(A):-
-	write('Las principales causas que pueden estar asociadas a: '),
-	write(A), write(' son:'), nl,nl,
-	causa(B,A),
-	write(B),nl.
-
-% Descripción		:	Obtiene las referencias a un determinado problema
-% Nombre de Regla	:	obtener_referencias(X,A)
-% Parámetro			:	probolema definido en application_db
-% Uso				:
-obtener_referencias(X,A):-
-	split_string(A, "', ,?" ,"', ,?", L),
-	eliminar_primeros(L,Y,5),
-	atomic_list_concat(Y, ' ', X),
-	referencias(X).
-
-referencias(A):-
-	write('Algunas referencias para su problema son: '),nl,
-	referencia(E,A),
-	write(E),nl.
-
-% Consultas, Solución de Problemas, Conversación usuario-se -------------------------------------------------------------------------------
-
-% Descripción		:	Envía a consulta_no(A,D) pregunta al usuario sobre determinado problema
-% Nombre de Regla	:	hoja_izquierda(B)
-% Parámetro			:	causa de un problema
-% Uso				:	raiz(B,A)
-hoja_izquierda(B):-
-    pregunta(D,B),
-    consulta_no(B, D).
-
-% Descripción		:	concatena las soluciones a un determinado problema
-% Nombre de Regla	:	consulta_no(A,P)
-% Parámetro			:	(causa de un problema, pregunta asociada)
-% Uso				:	hoja_izquierda(B)
-consulta_no(A, D):-
-    write(D), nl,
-    read(R), nl,
-    soluciones(L),
-    concatenar(L, [A, R], NL),
-    retractall(soluciones(_)),
-    assert(soluciones(NL)),
-    consulta_general(no, R).
-
-consulta_caso_base(B):-
-	solucion(C,B).
-consulta_general(R,R).
-
-% Descripción		:	Realiza el ciclo de conversación entre preguntas y respuestas, y despedida
-% Nombre de Regla	:	conversascion(Oracion)
-% Parámetro			:	String de una oración
-% Uso				:	inicio_aux()
-
-conversacion(Oracion,'referencias'):-
-	!,
-	obtener_referencias(_,Oracion),
-	respuesta_despedida().
-
-conversacion(Oracion,'causas'):-
-	!,
-	obtener_causas(_,Oracion),
-	respuesta_despedida().
-
-conversacion(Oracion,_):-
-	write('Responda con si. o no. a las siguientes preguntas'),nl,nl,
-	retractall(soluciones(_)),
-	assert(soluciones([])),
-	% write(Oracion),
-	raiz(A,Oracion),
-	solucion(B,A),
-	write(B),nl,
-	respuesta_despedida().
+miembro(X,[X|_]).
+miembro(X,[_|T]):-miembro(X,T).
 
 % Ejecutor SE -----------------------------------------------------------------------------------------------------------------------------
 
@@ -372,38 +234,11 @@ encabezado():-
 		sleep(0.02),
 		write('       ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||       '),nl,
 		sleep(0.02),
-		write('       |||||||||||||||||||||||| Call Center Log |||||||||||||||||||||||||       '),nl,
+		write('       ||||||||||||||||||||||||||| RestauranTEC |||||||||||||||||||||||||       '),nl,
 		sleep(0.02),
 		write('       ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||       '),nl,
 		sleep(0.02),
 		write('       ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||       '),nl.
-
-/*
-inicio():-
-	encabezado(),
-	sintagma_saludo([]),
-	writeln('Hola usuario'),
-	writeln('¿Cual es su nombre?'),
-	input_to_string(Nombre),
-	respuesta_saludo(Nombre),
-	inicio_aux().
-
-inicio_aux():-
-	input_to_list(Oracion),
-	validacion_gramatical(Oracion),nl,nl,
-	writeln('Para CallCenterLog es un gusto ayudarle con su problema,'),nl,
-	obtener_elemento(Oracion,2,A),
-	removehead(Oracion,B),
-	list_to_string(B,Y),
-	conversacion(Y,A),nl.
-*/
-
-removehead([_|Tail], Tail).
-
-
-
-
-
 
 
 
@@ -416,72 +251,74 @@ removehead([_|Tail], Tail).
 %formato: [nombre, tipoMenu, [direccion], [capacidad], [disposiciones]]
 
 %San Jose
-restaurante([mcdonald, rapida, [sanjose, 'Plaza del Sol'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([woods, italiana, [sanjose, 'Curridabat'], 20, 'el uso de mascarilla obligatorio']).
-restaurante([tacobell, mexicana, [sanjose, 'San Pedro'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([kfc, rapida,[sanjose, 'San Pedro'],20,'el uso de mascarilla obligatorio']).
-restaurante([marisqueando, mariscos,[sanjose, 'Centro de Desamparados'],20,'el uso de mascarilla obligatorio']).
-restaurante([hongkong,china,[sanjose, 'Moravia'],20,'el uso de mascarilla obligatorio']).
-restaurante([yokohama, japonesa, [sanjose, '200 mts al oeste de la Universidad de Costa Rica'], 20, 'el uso de mascarilla obligatorio']).
+restaurante([mcdonald, rapida, ['SanJose', 'Plaza del Sol'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([woods, italiana, ['San', 'Jose', 'Curridabat'], 20, 'es obligatorio el uso de mascarilla']).
+restaurante([tacobell, mexicana, ['San', 'Jose', 'San Pedro'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([kfc, rapida,['San', 'Jose', 'San Pedro'],20,'es obligatorio el uso de mascarilla']).
+restaurante([marisqueando, mariscos,['San', 'Jose', 'Centro de Desamparados'],20,'es obligatorio el uso de mascarilla']).
+restaurante([hongkong,china,['San', 'Jose', 'Moravia'],20,'es obligatorio el uso de mascarilla']).
+restaurante([yokohama, japonesa, ['San', 'Jose', '200 mts al oeste de la Universidad de Costa Rica'], 20, 'es obligatorio el uso de mascarilla']).
 
 %Cartaguito campeon
-restaurante([autogrill, bar, [cartago, 'Mall Paseo Metropoli'], 40, 'el uso de mascarilla obligatorio']).
-restaurante([mcdonald, rapida, [cartago, 'MetroCentro'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([pizzahut, italiana, [cartago, 'ruinas'], 5, 'el uso de mascarilla obligatorio']).
-restaurante([tejarena, rapida, [cartago, 'tejar'], 10, 'el uso de mascarilla obligatorio']).
-restaurante([tacobell, mexicana, [cartago, '100mts norte de las Ruinas'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([yokohama, japonesa, [cartago, 'Plaza Boulevard, Blvd. el Molino, Provincia de Cartago, Cartago'], 20, 'el uso de mascarilla obligatorio']).
-restaurante([kfc, rapida,[cartago, '50 mts al sur de las Ruinas'],20,'el uso de mascarilla obligatorio']).
-restaurante([linfei,china,[cartago, '200 mts al este de la Basilica de Los Angeles'],20,'el uso de mascarilla obligatorio']).
+restaurante([autogrill, bar, ['Cartago', 'Mall Paseo Metropoli'], 40, 'es obligatorio el uso de mascarilla']).
+restaurante([mcdonald, rapida, ['Cartago', 'MetroCentro'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([pizzahut, italiana, ['Cartago', 'Ruinas de Cartago'], 5, 'es obligatorio el uso de mascarilla']).
+restaurante([tejarena, rapida, ['Cartago', 'Tejar del Guarco'], 10, 'es obligatorio el uso de mascarilla']).
+restaurante([tacobell, mexicana, ['Cartago', '100mts norte de las Ruinas'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([yokohama, japonesa, ['Cartago', 'Plaza Boulevard, Blvd. el Molino, Provincia de Cartago, Cartago'], 20, 'es obligatorio el uso de mascarilla']).
+restaurante([kfc, rapida,['Cartago', '50 mts al sur de las Ruinas'],20,'es obligatorio el uso de mascarilla']).
+restaurante([linfei,china,['Cartago', '200 mts al este de la Basilica de Los Angeles'],20,'es obligatorio el uso de mascarilla']).
 
 %Puntarenas
-restaurante([mcdonald, rapida, [puntarenas, 'Plaza Centenario'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([rostipollos, rapida, [puntarenas, 'Hotel Alamar'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([pizzahut, italiana, [puntarenas, 'Ocean Mall'], 20, 'el uso de mascarilla obligatorio']).
-restaurante([fishy, mariscos, [puntarenas, 'Parque Mora'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([kfc, rapida,[puntarenas, 'Puntarenas Down Town'],20,'el uso de mascarilla obligatorio']).
-restaurante([yokohama, japonesa, [puntarenas, 'Puntarenas Down Town'],20,'el uso de mascarilla obligatorio']).
-restaurante([tacobell, mexicana, [puntarenas, 'Plaza La Rioja'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([wingshun,china,[puntarenas, 'Centro de la capital'],20,'el uso de mascarilla obligatorio']).
+restaurante([mcdonald, rapida, ['Puntarenas', 'Plaza Centenario'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([rostipollos, rapida, ['Puntarenas', 'Hotel Alamar'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([pizzahut, italiana, ['Puntarenas', 'Ocean Mall'], 20, 'es obligatorio el uso de mascarilla']).
+restaurante([fishy, mariscos, ['Puntarenas', 'Parque Mora'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([kfc, rapida,['Puntarenas', 'Puntarenas Down Town'],20,'es obligatorio el uso de mascarilla']).
+restaurante([yokohama, japonesa, ['Puntarenas', 'Puntarenas Down Town'],20,'es obligatorio el uso de mascarilla']).
+restaurante([tacobell, mexicana, ['Puntarenas', 'Plaza La Rioja'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([wingshun,china,['Puntarenas', 'Centro de la capital'],20,'es obligatorio el uso de mascarilla']).
 
 %Heredia
-restaurante([mcdonald, rapida, [heredia, 'Oxigeno Human Playground'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([pizzahut, italiana, [heredia, 'Mall Paseo de Las Flores'], 20, 'el uso de mascarilla obligatorio']).
-restaurante([mariscosymas, mariscos, [heredia, 'Entrada principal de la UNA 100 oeste y 25 Sur'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([kfc, rapida,[heredia, 'Mall Paseo de Las Flores'],20,'el uso de mascarilla obligatorio']).
-restaurante([yokohama, japonesa, [heredia, 'Contiguo Al AYA De San Pablo 112, Heredia, San Pablo'],20,'el uso de mascarilla obligatorio']).
-restaurante([tacobell, mexicana, [heredia, 'Mall Paseo de Las Flores'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([lungfung,china,[heredia, 'Limón, Heredia'],20,'el uso de mascarilla obligatorio']).
+restaurante([mcdonald, rapida, ['Heredia', 'Oxigeno Human Playground'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([pizzahut, italiana, ['Heredia', 'Mall Paseo de Las Flores'], 20, 'es obligatorio el uso de mascarilla']).
+restaurante([mariscosymas, mariscos, ['Heredia', 'Entrada principal de la UNA 100 oeste y 25 Sur'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([kfc, rapida,['Heredia', 'Mall Paseo de Las Flores'],20,'es obligatorio el uso de mascarilla']).
+restaurante([yokohama, japonesa, ['Heredia', 'Contiguo Al AYA De San Pablo 112, Heredia, San Pablo'],20,'es obligatorio el uso de mascarilla']).
+restaurante([tacobell, mexicana, ['Heredia', 'Mall Paseo de Las Flores'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([lungfung,china,['Heredia', 'Limón, Heredia'],20,'es obligatorio el uso de mascarilla']).
 
 %Alajuela
-restaurante([mcdonald, rapida, [alajuela, 'Diagonal Bomba Provincia de Alajuela La Tropicana, Provincia de Alajuela'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([pizzahut, italiana, [alajuela, 'Provincia de Alajuela, Alajuela'], 20, 'el uso de mascarilla obligatorio']).
-restaurante([limonta, mariscos, [alajuela, 'Avenida 6 y calle 5, casa esquinera mano derecha Alajuela'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([kfc, rapida,[alajuela, 'Cruce calle 2 Obispo Tristán y avenida 10 Jesús Ocaña'],20,'el uso de mascarilla obligatorio']).
-restaurante([matsuri, japonesa, [alajuela, 'Tropicana, Provincia de Alajuela, Alajuela'],20,'el uso de mascarilla obligatorio']).
-restaurante([tacobell, mexicana, [alajuela, 'Provincia de Alajuela, Alajuela'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([meywah,china,[alajuela, 'Av. 3 Tomás Guardia, Provincia de Alajuela, Alajuela'],20,'el uso de mascarilla obligatorio']).
+restaurante([mcdonald, rapida, ['Alajuela', 'Diagonal Bomba Provincia de Alajuela La Tropicana, Provincia de Alajuela'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([pizzahut, italiana, ['Alajuela', 'Centro de Alajuela'], 20, 'es obligatorio el uso de mascarilla']).
+restaurante([limonta, mariscos, ['Alajuela', 'Avenida 6 y calle 5, casa esquinera mano derecha Alajuela'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([kfc, rapida,['Alajuela', 'Cruce calle 2 Obispo Tristán y avenida 10 Jesús Ocaña'],20,'es obligatorio el uso de mascarilla']).
+restaurante([matsuri, japonesa, ['Alajuela', 'Tropicana, Provincia de Alajuela, Alajuela'],20,'es obligatorio el uso de mascarilla']).
+restaurante([tacobell, mexicana, ['Alajuela', 'Centro de Alajuela, Alajuela'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([meywah,china,['Alajuela', 'Av. 3 Tomás Guardia, Provincia de Alajuela, Alajuela'],20,'es obligatorio el uso de mascarilla']).
 
 %Guanacaste
-restaurante([mcdonald, rapida, [guanacaste, 'Carretera Interamericana Esq, Av. Central, Provincia de Guanacaste, Liberia'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([pizzahut, italiana, [guanacaste, 'Provincia de Guanacaste, Santa Cruz'], 20, 'el uso de mascarilla obligatorio']).
-restaurante([reina, mariscos, [guanacaste, 'Provincia de Guanacaste, Curime'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([kfc, rapida,[guanacaste, 'Diagonal a Plaza Santa Rosa, Liberia, Guanacaste, Provincia de Guanacaste, Liberia'],20,'el uso de mascarilla obligatorio']).
-restaurante([cos-ita, japonesa, [guanacaste, 'Parada de Buses Samara - San Jose, 160, Provincia de Guanacaste, Sámara'],20,'el uso de mascarilla obligatorio']).
-restaurante([tacobell, mexicana, [guanacaste, 'Limonal, Provincia de Guanacaste, La Palma'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([yongxin,china,[guanacaste, 'Provincia de Guanacaste, Liberia'],20,'el uso de mascarilla obligatorio']).
+restaurante([mcdonald, rapida, ['Guanacaste', 'Carretera Interamericana Esq, Av. Central, Provincia de Guanacaste, Liberia'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([pizzahut, italiana, ['Guanacaste', 'Provincia de Guanacaste, Santa Cruz'], 20, 'es obligatorio el uso de mascarilla']).
+restaurante([reina, mariscos, ['Guanacaste', 'Provincia de Guanacaste, Curime'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([kfc, rapida,['Guanacaste', 'Diagonal a Plaza Santa Rosa, Liberia, Guanacaste, Provincia de Guanacaste, Liberia'],20,'es obligatorio el uso de mascarilla']).
+restaurante([cos-ita, japonesa, ['Guanacaste', 'Parada de Buses Samara - San Jose, 160, Provincia de Guanacaste, Sámara'],20,'es obligatorio el uso de mascarilla']).
+restaurante([tacobell, mexicana, ['Guanacaste', 'Limonal, Provincia de Guanacaste, La Palma'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([yongxin,china,['Guanacaste', 'Provincia de Guanacaste, Liberia'],20,'es obligatorio el uso de mascarilla']).
 
 %Limon
-restaurante([mcdonald, rapida, [limon, 'Calle 8, Limon'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([pizzahut, italiana, [limon, 'Av 2, Limón'], 20, 'el uso de mascarilla obligatorio']).
-restaurante([rancho, mariscos, [limon, 'Unnamed Road, Liman, Guapiles'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([kfc, rapida,[limon, 'Centro de Limon'],20,'el uso de mascarilla obligatorio']).
-restaurante([tacobell, mexicana, [limon, 'Carr Braulio Carrillo, Limon, Guapiles'], 30, 'el uso de mascarilla obligatorio']).
-restaurante([china-garden,china,[limon, 'Pocora, Limon, sobre ruta 32, 100 este de Almacenes El Colono de, Limon, Pocora'],20,'el uso de mascarilla obligatorio']).
+restaurante([mcdonald, rapida, ['Limon', 'Calle 8, Limon'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([pizzahut, italiana, ['Limon', 'Av 2, Limón'], 20, 'es obligatorio el uso de mascarilla']).
+restaurante([rancho, mariscos, ['Limon', 'Unnamed Road, Limon, Guapiles'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([kfc, rapida,['Limon', 'Centro de Limon'],20,'es obligatorio el uso de mascarilla']).
+restaurante([tacobell, mexicana, ['Limon', 'Sobre carretera Braulio Carrillo, Guapiles, Limon'], 30, 'es obligatorio el uso de mascarilla']).
+restaurante([china-garden,china,['Limon', 'Pocora, Limon, sobre ruta 32, 100 este de Almacenes El Colono de, Limon, Pocora'],20,'es obligatorio el uso de mascarilla']).
 
 
 %tipos menu
 %formato: (tipo comida, [restaurantes], [sabores])
+menu([hamburguesa, [mcdonald, tejarena, autogrill], [simple, conQueso, dobleTorta, vegana]]).
+menu([hamburguesa, [autogrill], [artesanal]]).
 menu([hamburguesas, [mcdonald, tejarena, autogrill], [simple, conQueso, dobleTorta, vegana]]).
 menu([hamburguesas, [autogrill], [artesanal]]).
 
@@ -530,37 +367,76 @@ bebida([sangria, [yokohama, woods]]).
 %******************************************************************************
 %******************************************************************************
 
+% Se busca el tipo de menu
+listaTipoDeMenu(L) :- findall(X, (restaurante([_,X,_,_,_])) , L).
 
-
-miembro(X,[X|_]).
-miembro(X,[_|T]):-miembro(X,T).
+compareTipoDeMenu([],X):- nl, writeln('El tipo de menu ingresado no esta disponible'),
+						  writeln('Intente de nuevo'),nl,
+						  input_to_list(Oracion),
+						  compareTipoDeMenu(Oracion,X).
+compareTipoDeMenu([H|_], X):- listaTipoDeMenu(L),
+							  miembro(H,L),
+							  X = H, !.
+compareTipoDeMenu([H|T], X):- listaTipoDeMenu(L),
+	                          \+miembro(H,L),
+	                          compareTipoDeMenu(T,X).
 
 % Se buscan los restaurantes 
 listaRestaurantes(L) :- findall(X, (restaurante([X|_])), L).
 
-compareRest([],X):- X = 'no hay restaurante'.
+compareRest([],X):- nl, writeln('El restaurante ingresado no esta disponible'),
+					writeln('Intente de nuevo'),nl,
+					input_to_list(Oracion),
+					compareRest(Oracion,X).
 compareRest([H|_], X):- listaRestaurantes(L),
-		                miembro(H,L) , X = H, !.
+						miembro(H,L),
+						X = H, !.
 compareRest([H|T], X):- listaRestaurantes(L),
 	                    \+miembro(H,L),
 	                    compareRest(T,X).
 
-% Se buscan las comidas
+% Se busca la comida
 listaComidas(L) :- findall(X, (menu([X|_])), L).
 
-compareComida([],X):- X = 'no hay comida'.
+compareComida([],X):- nl, writeln('La comida ingresada no esta disponible'),
+					  writeln('Intente de nuevo'),nl,
+					  input_to_list(Oracion),
+					  compareComida(Oracion,X).
 compareComida([H|_], X):- listaComidas(L),
-		                  miembro(H,L) , X = H, !.
+						  miembro(H,L), 
+						  X = H, !.
 compareComida([H|T], X):- listaComidas(L),
 	                      \+miembro(H,L),
 	                      compareComida(T,X).
 
+% Se buscan el sabor especifico de la comida
+listaSaborComida(L) :- findall(X, (menu([_,_,X])), L).
+
+compareSaborComidaAux([H|_], X):- listaSaborComida(L),
+						          flatten(L,Y),
+						          X = Y.
+
+compareSaborComida([],X):- nl, writeln('El sabor de la comida ingresado no esta disponible'),
+						   writeln('Intente de nuevo'),nl,
+						   input_to_list(Oracion),
+						   compareSaborComida(Oracion,X).
+compareSaborComida([H|_], X):- compareSaborComidaAux(C, Y),
+							   miembro(H,Y), 
+							   X = H, !.
+compareSaborComida([H|T], X):- compareSaborComidaAux(C, Y),
+	                           \+miembro(H,Y),
+	                           compareSaborComida(T,X).
+
 % Se buscan los refrescos
 listaBebidas(L) :- findall(X, (bebida([X|_])) , L).
 
-compareBebida([],X):- X = 'no hay refresco'.
+compareBebida([],X):- nl, writeln('El sabor de la bebida ingresada no esta disponible'),
+					  writeln('Intente de nuevo'),nl,
+					  input_to_list(Oracion),
+					  compareBebida(Oracion,X).
 compareBebida([H|_], X):- listaBebidas(L),
-		                  miembro(H,L) , X = H, !.
+						  miembro(H,L),
+						  X = H, !.
 compareBebida([H|T], X):- listaBebidas(L),
 	                      \+miembro(H,L),
 	                      compareBebida(T,X).
@@ -572,59 +448,87 @@ compareLugarAux([H|_], X):- listaLugar(L),
 						    flatten(L,Y),
 						    X = Y.
 
-compareLugar([],X):- X = 'no hay lugar'.
+compareLugar([],X):- nl, writeln('El lugar ingresado no esta disponible'),
+					 writeln('Intente de nuevo'),nl,
+					 input_to_list(Oracion),
+					 compareLugar(Oracion,X).
 compareLugar([H|_], X):- compareLugarAux(C, Y),
-		                 miembro(H,Y) , X = H, !.
+						 miembro(H,Y), 
+						 X = H, !.
 compareLugar([H|T], X):- compareLugarAux(C, Y),
 	                     \+miembro(H,Y),
 	                     compareLugar(T,X).
 
 % Se busca la cantidad
-listaCantidad(Cantidad) :- numlist(1, 40, Cs),
-							atom_codes(A,Cs),
-							atomic_list_concat(Cantidad,' ',A).	
+listaCantidad(Cantidad) :- numlist(1, 40, CantidadTemp),
+							list_to_string(CantidadTemp, Str),
+							string_to_list_of_atoms(Str,Cantidad).	
 
-
-
-
-compareCantidad([],X):- X = 'no hay campo'.
-compareCantidad([H|_], X):- listaCantidad(L), writeln(L), writeln(H),
-		                    miembro(H,L) , X = H, !.
+compareCantidad([],X):-  nl, writeln('No hay cupo para la cantidad de personas ingresadas'),
+						 writeln('Intente de nuevo'),nl,
+						 input_to_list(Oracion),
+						 compareCantidad(Oracion,X).
+compareCantidad([H|_], X):- listaCantidad(L), 
+							miembro(H,L) , 
+							atom_number(H, Y),
+							X = Y, !.
 compareCantidad([H|T], X):- listaCantidad(L),
 	                        \+miembro(H,L),
 	                        compareCantidad(T,X).
 
 
-start(Y):-
-    %input_to_list(Oracion),
-    oracion(X,[]),
-    Y = X.
-
-iniciar(A,B,C,D,E):- 
-	/*
-	% Se busca el restaurante
+iniciar(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):- 
+	% Se busca el tipo de menu
+	nl, writeln('¿Que tipo de menu desea comer? (Puede se rapida, china, etc.)'),
 	input_to_list(Oracion),
-    compareRest(Oracion, Rest),
-	A = Rest,
-	% Se busca la comida
+	validacion_gramatical(Oracion),
+    compareTipoDeMenu(Oracion, TipoMenuTemp),
+	TipoMenu = TipoMenuTemp,
+	
+	% Se busca el restaurante
+	nl, writeln('¿En cual restaurante desea comer?'),
 	input_to_list(Oracion2),
-	compareComida(Oracion2, Comida),
-	B = Comida,
-	% Se busca la bebida
+	validacion_gramatical(Oracion2),
+    compareRest(Oracion2, RestTemp),
+	NombreRest = RestTemp,	
+
+	% Se busca la comida
+	nl, write('¿Cual comida de '), write(NombreRest), write(' desea?'), nl,
 	input_to_list(Oracion3),
-	compareBebida(Oracion3, Bebida),
-	C = Bebida,
-	% Se busca el lugar
+	validacion_gramatical(Oracion3),
+	compareComida(Oracion3, ComidaTemp),
+	TipoComida = ComidaTemp,
+
+	% Se busca algun sabor especifico
+	nl, write('¿Cual tipo de '), write(TipoComida), write(' desea?'), nl,
 	input_to_list(Oracion4),
-	compareLugar(Oracion4, Lugar),
-	D = Lugar,
-	*/
-	% Se busca la cantidad
+	validacion_gramatical(Oracion4),
+	compareSaborComida(Oracion4, SaborComidaTemp),
+	SaborComida = SaborComidaTemp,
+
+	% Se busca la bebida
+	nl, writeln('¿Que le gustaria de tomar?'),
 	input_to_list(Oracion5),
-	compareCantidad(Oracion5, Cantidad),
-	E = Cantidad.
+	validacion_gramatical(Oracion5),
+	compareBebida(Oracion5, BebidaTemp),
+	TipoBebida = BebidaTemp,
 
+	% Se busca el lugar
+	nl, write('¿En cual provincia le gustaria buscar '), write(NombreRest), write(' ?'), nl,
+	input_to_list(Oracion6),
+	validacion_gramatical(Oracion6),
+	compareLugar(Oracion6, LugarTemp),
+	LugarDeseado = LugarTemp,
 
+	% Se busca la cantidad
+	nl, writeln('¿Para cuantas personas le gustaria buscar?'),
+	input_to_list(Oracion7),
+	validacion_gramatical(Oracion7),
+	compareCantidad(Oracion7, CantidadTemp),
+	CantidadDeseada = CantidadTemp,
+
+	% Se validan los datos y se busca la referencia en caso de existir
+	buscarResta(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada).
 
 
 
@@ -633,43 +537,64 @@ iniciar(A,B,C,D,E):-
 %******************************************************************************
 
 
-%aperaciones basicas
-%miembro(X,[X|_]).
-%miembro(X,[_|T]):-miembro(X,T).
+verificarDatos(NombreRest, NombreIngresado, NombreIngresado2, SaborComida, SaboresDisponibles):-	
+	miembro(NombreRest, NombreIngresado), 
+	miembro(NombreRest, NombreIngresado2), 
+	miembro(SaborComida, SaboresDisponibles).
 
 %busca el mejor restaurante segun los parametros dados.
-buscarResta(TipoMenu, Comida, TipoComida, Lugar, Capacidad):-
-    restaurante(Nombre, TipoMenu, [Lugar | Direccion], RCapacidad, Obligaciones),
-    Capacidad =< RCapacidad,
-    menu(Comida, LNombre, T),
-    miembro(Nombre, LNombre),
-    miembro(TipoComida, T),
-    crearReferencia(Nombre, Direccion, Obligaciones), !,
-    write('No se encuentra ningun restaurante con estas caracteristicas :(. Lo sentimos').
+buscarResta(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
+    restaurante([NombreRest, TipoMenu, [LugarDeseado | Direccion], RCapacidad, Obligaciones]),
+	CantidadDeseada > 0,
+	CantidadDeseada =< RCapacidad,
+	menu([TipoComida, NombreIngresado, SaboresDisponibles]),
+	bebida([TipoBebida, NombreIngresado2]),
+	verificarDatos(NombreRest, NombreIngresado, NombreIngresado2, SaborComida, SaboresDisponibles),
+	crearReferencia(NombreRest, Direccion, Obligaciones),
+	buscarNuevamente(), !.
 
-crearReferencia(Nombre, Direccion, Obligaciones):-
-    write('Nuestra sugerencia es '),
-    write(Nombre),
-    write( '. Su direccion es: '),
-    write(Direccion),
-    write('. Tenga en cuenta que para ingresar '),
-    write(Obligaciones).
+buscarResta(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
+	restaurante([NombreRest, TipoMenu, [LugarDeseado | Direccion], RCapacidad, Obligaciones]),
+	CantidadDeseada > 0,
+	CantidadDeseada =< RCapacidad,
+	menu([TipoComida, NombreIngresado, SaboresDisponibles]),
+	bebida([TipoBebida, NombreIngresado2]),
+	\+verificarDatos(NombreRest, NombreIngresado, NombreIngresado2, SaborComida, SaboresDisponibles),
+	nl, writeln('**************************************************************************************'), nl,
+	nl, writeln('--> No se pudo encuentrar ningun restaurante con los datos ingresados. Lo sentimos <--'), nl,
+	nl, writeln('**************************************************************************************'), nl,
+	buscarNuevamente(), !.
+
+
+buscarNuevamenteAux(Respuesta):- miembro('si',Respuesta),
+								 iniciar(A,B,C,D,E,F,G).
+buscarNuevamenteAux(Respuesta):- \+miembro('si',Respuesta),
+								 despedida(), !.
+
+buscarNuevamente():- nl, writeln('--> Desea buscar nuevamente? (Debe responder con si o no a la pregunta) <--'), nl,
+						input_to_list(Respuesta),
+						buscarNuevamenteAux(Respuesta), !.
+
+crearReferencia(NombreRest, DireccionTemp, Obligaciones):-
+	list_to_string(DireccionTemp,Direccion),
+	TempRef = ['--> Nuestra sugerencia de restaurante es', NombreRest, 
+		       '. La direccion es: ', Direccion, 
+		       '. Tenga en cuenta que para ingresar', Obligaciones, '. <--'],
+
+	list_to_string(TempRef, Ref), nl,
+	nl, writeln('**************************************************************************************'), nl,
+	writeln(Ref),
+	nl, writeln('**************************************************************************************'), nl.
+
+despedida():- nl, writeln('**************************************************************************************'), nl,
+			  nl, write('         --> Muchas gracias por preferirnos. '), write('Lo esperamos pronto. <--'), nl, nl,
+			  nl, writeln('**************************************************************************************'), nl, !. 
 
 inicio():-
-    write('Menu'), nl, read(M),
-    write('Comida'), nl, read(Co), 
-    write('Tipo Comida'), nl, read(TC),
-    write('Lugar'), nl, read(L), 
-    write('Cantidad'), nl, read(C), 
-    buscarResta(M , Co, TC, L, C), !.
+	encabezado(),
+	iniciar(A,B,C,D,E,F,G).
 
 
-
-%************************************************
-%************************************************
-
-
-?- write(' '),nl.
-?- write('Sistema desarrollado por: angelortizv, isolis2000, jesquivel48'),nl.
-?- write('Inserte inicio(). para iniciar con el sistema experto.'),nl,nl.
-
+%******************************************************************************
+%******************************************************************************
+%******************************************************************************
