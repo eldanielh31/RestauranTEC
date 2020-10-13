@@ -1,251 +1,3 @@
-% application_db.pl -- archivo secundario, contiene hechos de Prolog.
-%
-% Este archivo es parte de  CallCenterLog, El presente tiene como objetivo el desarrollo de una aplicacion que se comporte
-% como un experto en la solucion de problemas comunes de un Call Center de TI utilizando Prolog. Los Sistemas expertos,
-% de ahora en adelante SE, son aplicaciones de computo que involucran experiencia no algoritmica, para resolver cierto
-% tipo de problema. La interfaz debe ser completamente natural utilizando el lenguaje espanol. El usuario que presenta
-% el problema, ingresa e informa al SE de todos los inconvenientes que tiene (hardware y software) que le impiden realizar
-% sus tareas normalmente y finalmente puede consultar.
-%
-% Version de Archivo		: 0.1
-% Autores					: GitHub@angelortizv, GitHub@jesquivel48, GitHub@isolis2000
-% Úlitma Modificacion		: 07/09/2019, 16:00, @angelortizv
-
-
-:- discontiguous miembro/2.
-
-% Palabras Clave para el BNF --------------------------------------------------------------------------------------------------------------
-
-%  Descripción		:	Determinantes masculinos
-% Nombre de Hecho	:	determinante_m(X)
-% Parámetro			:	determinantes masculinos
-% Uso				:	sintagma_nominal([A],[B])
-
-determinante_m([el|S],S).
-determinante_m([lo|S],S).
-determinante_m([los|S],S).
-determinante_m([un|S],S).
-determinante_m([unos|S],S).
-
-% Descripción		:	Determinantes femeninos
-% Nombre de Hecho	:	determinante_f([X])
-% Parámetro			:	determinantes femeninos
-% Uso				:	sintagma_nominal([A],[B])
-
-determinante_f([la|S],S).
-determinante_f([las|S],S).
-determinante_f([una|S],S).
-determinante_f([unas|S],S).
-
-% Descripción		:	Determinantes neutros
-% Nombre de Hecho	:	determinante_n([X])
-% Parámetro			:	determinantes neutros
-% Uso				:	sintagma_nominal([A],[B])
-
-determinante_n([nosotros|S],S).
-determinante_n([yo|S],S).
-
-% Descripción		:	Sustantivos
-% Nombre de Hecho	:	sustantivo_g([X])
-% Parámetro			:	sustantivo general (anónimo)
-% Uso				:	sintagma_nominal([A],[B])
-
-sustantivo_g([_|S],S).
-
-% Descripción		:	Verbos
-% Nombre de Hecho	:	verbo([X])
-% Parámetro			:	verbos utilizables
-% Uso				:	sintagma_verbal([A],[B])
-
-verbo([comer|S], S).
-verbo([tomar|S], S).
-verbo([beber|S], S).
-verbo([quiero|S],S).
-verbo([queremos|S],S).
-verbo([quiero,comer|S],S).
-verbo([quiero,tomar|S],S).
-verbo([quiero,beber|S],S).
-verbo([queremos,comer|S],S).
-verbo([queremos,tomar|S],S).
-verbo([queremos,beber|S],S).
-
-verbo([quiero,estar,cerca,de|S],S).
-verbo([quiero,algo,cerca,de|S],S).
-verbo([quiero,estar,alrededor,de|S],S).
-verbo([quiero,algo,alrededor,de|S],S).
-verbo([queremos,estar,cerca,de|S],S).
-verbo([queremos,algo,cerca,de|S],S).
-verbo([queremos,estar,alrededor,de|S],S).
-verbo([queremos,algo,alrededor,de|S],S).
-
-verbo([seria|S], S).
-verbo([seriamos|S], S).
-verbo([somos|S], S).
-
-
-
-
-
-
-
-
-
-
-
-
-
-% main.pl -- archivo principal para correr CallCenterLog, contiene reglas de Prolog.
-%
-% Este archivo es parte de  CallCenterLog, El presente tiene como objetivo el desarrollo de una aplicación que se comporte
-% como un experto en la solución de problemas comunes de un Call Center de TI utilizando Prolog. Los Sistemas expertos,
-% de ahora en adelante SE, son aplicaciones de cómputo que involucran experiencia no algorítmica, para resolver cierto
-% tipo de problema. La interfaz debe ser completamente natural utilizando el lenguaje español. El usuario que presenta
-% el problema, ingresa e informa al SE de todos los inconvenientes que tiene (hardware y software) que le impiden realizar
-% sus tareas normalmente y finalmente puede consultar.
-%
-% Version de Archivo		: 0.1
-% Autores					: GitHub@angelortizv, GitHub@jesquivel48, GitHub@isolis2000
-% Úlitma Modificacion		: 07/09/2019, 16:00, @angelortizv
-%Hola como esras?
-
-%:-consult('application_db').
-:-style_check(-singleton).
-:-dynamic(soluciones/1).
-
-% BNF -------------------------------------------------------------------------------------------------------------------------------------
-
-% Descripción		:	recibe una lista de palabras y una lista vacía y verifica si es una oración gramaticalmente correcta según la estructura establecida
-% Nombre de Regla	:	oracion([A],[B])
-% Parámetro			:	lista para revisar y lista vacía
-% Uso				:	se utiliza para validar oraciones
-
-oracion(A,B):-
-    sintagma_nominal(A,C).
-
-
-% Descripción		:	recibe una lista de palabras y una lista vacía; elimina el primer sintagma nominal encontrado y devuelve el resto de las palabras
-% Nombre de Regla	:	sintagma_nominal([A],[B])
-% Parámetro			:	lista a revisar y lista vacía
-% Uso				:	se utiliza para encontrar el primer sintagma nominal en una lista de palabras
-
-sintagma_nominal(A,B):-
-    determinante_m(A,C),
-    sintagma_verbal(C,Z),
-	sustantivo_g(Z,B).
-sintagma_nominal(A,B):-
-    determinante_f(A,C),
-    sintagma_verbal(C,Z),
-	sustantivo_g(Z,B).
-sintagma_nominal(A,B):-
-    determinante_n(A,C),
-    sintagma_verbal(C,Z),
-	sustantivo_g(Z,B).
-sintagma_nominal(A,B):-
-    determinante_n(A,C),
-    sintagma_verbal(C,Z),
-    determinante_m(Z,Y),
-	sustantivo_g(Y,B).
-sintagma_nominal(A,B):-
-    determinante_n(A,C),
-    sintagma_verbal(C,Z),
-    determinante_f(Z,Y),
-	sustantivo_g(Y,B).
-sintagma_nominal(A,B):-
-    determinante_n(A,C),
-    sintagma_verbal(C,Z),
-	sustantivo_g(Z,B).
-sintagma_nominal(A,B):-
-	sintagma_verbal(A,C),
-    sustantivo_g(C,B).
-sintagma_nominal(A,B):-
-    sintagma_verbal(A,B).
-
-
-% Descripción		:	recibe una lista de palabras y una lista vacía; elimina el primer sintagma verbal encontrado y devuelve el resto de las palabras
-% Nombre de Regla	:	sintagma_verbal([A],[B])
-% Parámetro			:	lista a revisar y lista vacía
-% Uso				:	se utiliza para encontrar el primer sintagma verbal en una lista de palabras
-
-sintagma_verbal(A,B):-
-	verbo(A,B).
-
-% Descripción		:	recibe una lista de palabras y una lista vacía y verifica si estas palabras componen un saludo al programa (Ej. “hola log”)
-% Nombre de Regla	:	sintagma_saludo([B])
-% Parámetro			:	lista a revisar y lista vacía
-% Uso				:	se utiliza para encontrar el primer sintagma saludo en una lista de palabras
-
-sintagma_saludo(B):-
-	input_to_list(L),
-	saludo(L,C),
-	nombre_programa(C,B),!.
-sintagma_saludo(B):-
-	sintagma_saludo([]).
-
-% ValidaciÓn Gramatical, Saludo, Despedida ------------------------------------------------------------------------------------------------
-
-% Descripción		:	valida si la oración digitada por el usuario está gramaticalmente correcta según el BNF establecido
-% Nombre de Regla	:	validacion_gramatical()
-% Parámetro			:	lista a revisar
-% Uso				:	Se utiliza para verificar gramaticalmente una oración, de lo contrario, devolver un mensaje al usuario
-validacion_gramatical(Oracion):-
-    oracion(Oracion,[]),
-	!.
-
-validacion_gramatical(Oracion):-
-	writeln('Oracion gramaticalmente incorrecta #1'),
-	writeln('Escriba de nuevo su oracion #1'),nl,
-	input_to_list(Oracion2),
-	validacion_gramatical(Oracion2).
-
-
-% Operaciones Basicas ------------------------------------------------------------------------------------------------------------
-
-lista_vacia(List, Empty) :-
-    length(List, Len),
-    (   Len =< 1
-    ->  Empty = true
-    ;   Empty = false
-    ).
-
-input_to_list(L):-
-	read_line_to_codes(user_input,Cs),
-	atom_codes(A,Cs),
-	atomic_list_concat(L,' ',A).
-
-input_to_string(A):-
-	read_line_to_codes(user_input,Cs),
-	atom_codes(A,Cs).
-
-list_to_string(List, String):-
-	atomic_list_concat(List, ' ', String).
-
-string_to_list_of_atoms(X,L):-
-	atom_codes(X,A),
-	atomic_list_concat(L,' ',X).
-
-miembro(X,[X|_]).
-miembro(X,[_|T]):-miembro(X,T).
-
-% Ejecutor SE -----------------------------------------------------------------------------------------------------------------------------
-
-encabezado():-
-	sleep(0.02),
-		write('       ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||       '),nl,
-		sleep(0.02),
-		write('       ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||       '),nl,
-		sleep(0.02),
-		write('       ||||||||||||||||||||||||||| RestauranTEC |||||||||||||||||||||||||       '),nl,
-		sleep(0.02),
-		write('       ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||       '),nl,
-		sleep(0.02),
-		write('       ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||       '),nl.
-
-
-
-%******************************************************************************
-%******************************************************************************
-%******************************************************************************
-
 
 %Restaurantes disponibles en la app
 %formato: [nombre, tipoMenu, [direccion], [capacidad], [disposiciones]]
@@ -363,6 +115,256 @@ bebida([sangria, [yokohama, woods]]).
 
 
 
+
+
+
+% application_db.pl -- archivo secundario, contiene hechos de Prolog.
+%
+% Este archivo es parte de  CallCenterLog, El presente tiene como objetivo el desarrollo de una aplicacion que se comporte
+% como un experto en la solucion de problemas comunes de un Call Center de TI utilizando Prolog. Los Sistemas expertos,
+% de ahora en adelante SE, son aplicaciones de computo que involucran experiencia no algoritmica, para resolver cierto
+% tipo de problema. La interfaz debe ser completamente natural utilizando el lenguaje espanol. El usuario que presenta
+% el problema, ingresa e informa al SE de todos los inconvenientes que tiene (hardware y software) que le impiden realizar
+% sus tareas normalmente y finalmente puede consultar.
+%
+% Version de Archivo		: 0.1
+% Autores					: GitHub@angelortizv, GitHub@jesquivel48, GitHub@isolis2000
+% Úlitma Modificacion		: 07/09/2019, 16:00, @angelortizv
+
+
+:- discontiguous miembro/2.
+
+% Palabras Clave para el BNF --------------------------------------------------------------------------------------------------------------
+
+%  Descripción		:	Determinantes masculinos
+% Nombre de Hecho	:	determinante_m(X)
+% Parámetro			:	determinantes masculinos
+% Uso				:	sintagma_nominal([A],[B])
+
+determinante_m([el|S],S).
+determinante_m([lo|S],S).
+determinante_m([los|S],S).
+determinante_m([un|S],S).
+determinante_m([unos|S],S).
+
+% Descripción		:	Determinantes femeninos
+% Nombre de Hecho	:	determinante_f([X])
+% Parámetro			:	determinantes femeninos
+% Uso				:	sintagma_nominal([A],[B])
+
+determinante_f([la|S],S).
+determinante_f([las|S],S).
+determinante_f([una|S],S).
+determinante_f([unas|S],S).
+
+% Descripción		:	Determinantes neutros
+% Nombre de Hecho	:	determinante_n([X])
+% Parámetro			:	determinantes neutros
+% Uso				:	sintagma_nominal([A],[B])
+
+determinante_n([nosotros|S],S).
+determinante_n(['Nosotros'|S],S).
+determinante_n([yo|S],S).
+determinante_n(['Yo'|S],S).
+% Descripción		:	Sustantivos
+% Nombre de Hecho	:	sustantivo_g([X])
+% Parámetro			:	sustantivo general (anónimo)
+% Uso				:	sintagma_nominal([A],[B])
+
+sustantivo_g([_|S],S).
+
+% Descripción		:	Verbos
+% Nombre de Hecho	:	verbo([X])
+% Parámetro			:	verbos utilizables
+% Uso				:	sintagma_verbal([A],[B])
+
+verbo([comer|S], S).
+verbo([tomar|S], S).
+verbo([beber|S], S).
+verbo([quiero|S],S).
+verbo([queremos|S],S).
+verbo([quiero,comer|S],S).
+verbo([quiero,tomar|S],S).
+verbo([quiero,beber|S],S).
+verbo([queremos,comer|S],S).
+verbo([queremos,tomar|S],S).
+verbo([queremos,beber|S],S).
+
+verbo([quiero,estar,cerca,de|S],S).
+verbo([quiero,algo,cerca,de|S],S).
+verbo([quiero,estar,alrededor,de|S],S).
+verbo([quiero,algo,alrededor,de|S],S).
+verbo([queremos,estar,cerca,de|S],S).
+verbo([queremos,algo,cerca,de|S],S).
+verbo([queremos,estar,alrededor,de|S],S).
+verbo([queremos,algo,alrededor,de|S],S).
+
+verbo([seria|S], S).
+verbo([seriamos|S], S).
+verbo([somos|S], S).
+
+verbo(['Quiero'|S],S).
+verbo(['Queremos'|S],S).
+verbo(['Quiero,comer'|S],S).
+verbo(['Quiero,tomar'|S],S).
+verbo(['Quiero,beber'|S],S).
+verbo(['Queremos,comer'|S],S).
+verbo(['Queremos,tomar'|S],S).
+verbo(['Queremos,beber'|S],S).
+
+verbo(['Quiero,estar,cerca,de'|S],S).
+verbo(['Quiero,algo,cerca,de'|S],S).
+verbo(['Quiero,estar,alrededor,de'|S],S).
+verbo(['Quiero,algo,alrededor,de'|S],S).
+verbo(['Queremos,estar,cerca,de'|S],S).
+verbo(['Queremos,algo,cerca,de'|S],S).
+verbo(['Queremos,estar,alrededor,de'|S],S).
+verbo(['Queremos,algo,alrededor,de'|S],S).
+
+verbo(['Seria'|S], S).
+verbo(['Seriamos'|S], S).
+verbo(['Somos'|S], S).
+
+
+
+
+
+
+
+
+
+
+
+% main.pl -- archivo principal para correr CallCenterLog, contiene reglas de Prolog.
+%
+% Este archivo es parte de  CallCenterLog, El presente tiene como objetivo el desarrollo de una aplicación que se comporte
+% como un experto en la solución de problemas comunes de un Call Center de TI utilizando Prolog. Los Sistemas expertos,
+% de ahora en adelante SE, son aplicaciones de cómputo que involucran experiencia no algorítmica, para resolver cierto
+% tipo de problema. La interfaz debe ser completamente natural utilizando el lenguaje español. El usuario que presenta
+% el problema, ingresa e informa al SE de todos los inconvenientes que tiene (hardware y software) que le impiden realizar
+% sus tareas normalmente y finalmente puede consultar.
+%
+% Version de Archivo		: 0.1
+% Autores					: GitHub@angelortizv, GitHub@jesquivel48, GitHub@isolis2000
+% Úlitma Modificacion		: 07/09/2019, 16:00, @angelortizv
+%Hola como esras?
+
+%:-consult('application_db').
+:-style_check(-singleton).
+:-dynamic(soluciones/1).
+
+% BNF -------------------------------------------------------------------------------------------------------------------------------------
+% Validación Gramatical, Saludo, Despedida ------------------------------------------------------------------------------------------------
+
+
+% Descripción		:	recibe una lista de palabras y una lista vacía y verifica si es una oración gramaticalmente correcta según la estructura establecida
+% Nombre de Regla	:	oracion([A],[B])
+% Parámetro			:	lista para revisar y lista vacía
+% Uso				:	se utiliza para validar oraciones
+
+oracion(A,B):-
+    sintagma_nominal(A,C).
+
+
+% Descripción		:	recibe una lista de palabras y una lista vacía; elimina el primer sintagma nominal encontrado y devuelve el resto de las palabras
+% Nombre de Regla	:	sintagma_nominal([A],[B])
+% Parámetro			:	lista a revisar y lista vacía
+% Uso				:	se utiliza para encontrar el primer sintagma nominal en una lista de palabras
+
+sintagma_nominal(A,B):-
+    determinante_m(A,C),
+    sintagma_verbal(C,Z),
+	sustantivo_g(Z,B).
+sintagma_nominal(A,B):-
+    determinante_f(A,C),
+    sintagma_verbal(C,Z),
+	sustantivo_g(Z,B).
+sintagma_nominal(A,B):-
+    determinante_n(A,C),
+    sintagma_verbal(C,Z),
+	sustantivo_g(Z,B).
+sintagma_nominal(A,B):-
+    determinante_n(A,C),
+    sintagma_verbal(C,Z),
+    determinante_m(Z,Y),
+	sustantivo_g(Y,B).
+sintagma_nominal(A,B):-
+    determinante_n(A,C),
+    sintagma_verbal(C,Z),
+    determinante_f(Z,Y),
+	sustantivo_g(Y,B).
+sintagma_nominal(A,B):-
+    determinante_n(A,C),
+    sintagma_verbal(C,Z),
+	sustantivo_g(Z,B).
+sintagma_nominal(A,B):-
+	sintagma_verbal(A,C),
+    sustantivo_g(C,B).
+sintagma_nominal(A,B):-
+    sintagma_verbal(A,B).
+
+
+% Descripción		:	recibe una lista de palabras y una lista vacía; elimina el primer sintagma verbal encontrado y devuelve el resto de las palabras
+% Nombre de Regla	:	sintagma_verbal([A],[B])
+% Parámetro			:	lista a revisar y lista vacía
+% Uso				:	se utiliza para encontrar el primer sintagma verbal en una lista de palabras
+
+sintagma_verbal(A,B):-
+	verbo(A,B).
+
+% Descripción		:	valida si la oración digitada por el usuario está gramaticalmente correcta según el BNF establecido
+% Nombre de Regla	:	validacion_gramatical()
+% Parámetro			:	lista a revisar
+% Uso				:	Se utiliza para verificar gramaticalmente una oración, de lo contrario, devolver un mensaje al usuario
+validacion_gramatical(Oracion):-
+    oracion(Oracion,[]),
+	!.
+
+validacion_gramatical(Oracion):-
+	writeln('Oracion gramaticalmente incorrecta #1'),
+	writeln('Escriba de nuevo su oracion #1'),nl,
+	input_to_list(Oracion2),
+	validacion_gramatical(Oracion2).
+
+
+
+
+% Reglas necesarias para operaciones basicas ------------------------------------------------------------------------------------------------------------
+
+lista_vacia(List, Empty) :-
+    length(List, Len),
+    (   Len =< 1
+    ->  Empty = true
+    ;   Empty = false
+    ).
+
+input_to_list(L):-
+	read_line_to_codes(user_input,Cs),
+	atom_codes(A,Cs),
+	atomic_list_concat(L,' ',A).
+
+input_to_string(A):-
+	read_line_to_codes(user_input,Cs),
+	atom_codes(A,Cs).
+
+list_to_string(List, String):-
+	atomic_list_concat(List, ' ', String).
+
+string_to_list_of_atoms(X,L):-
+	atom_codes(X,A),
+	atomic_list_concat(L,' ',X).
+
+miembro(X,[X|_]).
+miembro(X,[_|T]):-miembro(X,T).
+
+
+
+%******************************************************************************
+%******************************************************************************
+%******************************************************************************
+
+
+
 %******************************************************************************
 %******************************************************************************
 %******************************************************************************
@@ -477,7 +479,7 @@ compareCantidad([H|T], X):- listaCantidad(L),
 	                        compareCantidad(T,X).
 
 
-iniciar(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):- 
+pedirDatos(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):- 
 	% Se busca el tipo de menu
 	nl, writeln('¿Que tipo de menu desea comer? (Puede se rapida, china, etc.)'),
 	input_to_list(Oracion),
@@ -527,8 +529,15 @@ iniciar(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado,
 	compareCantidad(Oracion7, CantidadTemp),
 	CantidadDeseada = CantidadTemp,
 
+	nl, writeln(NombreRest),
+	write(TipoMenu),
+	write(TipoComida),
+	write(SaborComida),
+	write(TipoBebida), 
+	write(LugarDeseado),
+	write(CantidadDeseada),nl,	
 	% Se validan los datos y se busca la referencia en caso de existir
-	buscarResta(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada).
+	buscarRestauranteConDatosIngresados(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada).
 
 
 
@@ -543,7 +552,7 @@ verificarDatos(NombreRest, NombreIngresado, NombreIngresado2, SaborComida, Sabor
 	miembro(SaborComida, SaboresDisponibles).
 
 %busca el mejor restaurante segun los parametros dados.
-buscarResta(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
+buscarRestauranteConDatosIngresados(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
     restaurante([NombreRest, TipoMenu, [LugarDeseado | Direccion], RCapacidad, Obligaciones]),
 	CantidadDeseada > 0,
 	CantidadDeseada =< RCapacidad,
@@ -553,7 +562,7 @@ buscarResta(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDese
 	crearReferencia(NombreRest, Direccion, Obligaciones),
 	buscarNuevamente(), !.
 
-buscarResta(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
+buscarRestauranteConDatosIngresados(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
 	restaurante([NombreRest, TipoMenu, [LugarDeseado | Direccion], RCapacidad, Obligaciones]),
 	CantidadDeseada > 0,
 	CantidadDeseada =< RCapacidad,
@@ -565,9 +574,19 @@ buscarResta(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDese
 	nl, writeln('**************************************************************************************'), nl,
 	buscarNuevamente(), !.
 
+crearReferencia(NombreRest, DireccionTemp, Obligaciones):-
+	list_to_string(DireccionTemp,Direccion),
+	TempRef = ['--> Nuestra sugerencia de restaurante es', NombreRest, 
+		       '. La direccion es: ', Direccion, 
+		       '. Tenga en cuenta que para ingresar al restaurante', Obligaciones, '. <--'],
+
+	list_to_string(TempRef, Ref), nl,
+	nl, writeln('**************************************************************************************'), nl,
+	writeln(Ref),
+	nl, writeln('**************************************************************************************'), nl.
 
 buscarNuevamenteAux(Respuesta):- miembro('si',Respuesta),
-								 iniciar(A,B,C,D,E,F,G).
+								 pedirDatos(A,B,C,D,E,F,G).
 buscarNuevamenteAux(Respuesta):- \+miembro('si',Respuesta),
 								 despedida(), !.
 
@@ -575,16 +594,21 @@ buscarNuevamente():- nl, writeln('--> Desea buscar nuevamente? (Debe responder c
 						input_to_list(Respuesta),
 						buscarNuevamenteAux(Respuesta), !.
 
-crearReferencia(NombreRest, DireccionTemp, Obligaciones):-
-	list_to_string(DireccionTemp,Direccion),
-	TempRef = ['--> Nuestra sugerencia de restaurante es', NombreRest, 
-		       '. La direccion es: ', Direccion, 
-		       '. Tenga en cuenta que para ingresar', Obligaciones, '. <--'],
+% Ejecutor SE -----------------------------------------------------------------------------------------------------------------------------
 
-	list_to_string(TempRef, Ref), nl,
-	nl, writeln('**************************************************************************************'), nl,
-	writeln(Ref),
-	nl, writeln('**************************************************************************************'), nl.
+encabezado():-
+	sleep(0.02),
+		write('       ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||       '),nl,
+		sleep(0.02),
+		write('       ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||       '),nl,
+		sleep(0.02),
+		write('       ||||||||||||||||||||||||||| RestauranTEC |||||||||||||||||||||||||       '),nl,
+		sleep(0.02),
+		write('       ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||       '),nl,
+		sleep(0.02),
+		write('       ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||       '),nl.
+
+
 
 despedida():- nl, writeln('**************************************************************************************'), nl,
 			  nl, write('         --> Muchas gracias por preferirnos. '), write('Lo esperamos pronto. <--'), nl, nl,
@@ -592,7 +616,7 @@ despedida():- nl, writeln('*****************************************************
 
 inicio():-
 	encabezado(),
-	iniciar(A,B,C,D,E,F,G).
+	pedirDatos(A,B,C,D,E,F,G).
 
 
 %******************************************************************************

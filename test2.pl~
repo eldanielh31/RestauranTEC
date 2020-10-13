@@ -1,3 +1,0 @@
-inicio():-
-    read(A),
-    A<10.
