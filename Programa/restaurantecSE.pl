@@ -310,6 +310,17 @@ buscarRestauranteConDatosIngresados(NombreRest, TipoMenu, TipoComida, SaborComid
 	buscarNuevamente(), !.
 
 buscarRestauranteConDatosIngresados(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
+    restaurante([NombreRest, TipoMenu, [LugarDeseado | Direccion], RCapacidad, Obligaciones]),
+	CantidadDeseada > 0,
+	CantidadDeseada > RCapacidad,
+	nl, write('La cantidad ingresada es mayor a la la capacidad total del restaurante: '), write(RCapacidad), nl, 
+	write('Intente de nuevo'), nl, nl, 
+	input_to_list(Oracion),
+	validacion_gramatical(Oracion),
+	compareCantidad(Oracion, CantidadTemp),
+	buscarRestauranteConDatosIngresados(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadTemp).
+
+buscarRestauranteConDatosIngresados(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
 	restaurante([NombreRest, TipoMenu, [LugarDeseado | Direccion], RCapacidad, Obligaciones]),
 	CantidadDeseada > 0,
 	CantidadDeseada =< RCapacidad,
