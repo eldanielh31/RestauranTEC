@@ -242,14 +242,14 @@ pedirDatos(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDesea
 	TipoMenu = TipoMenuTemp,
 	
 	% Se busca el restaurante
-	nl, writeln('¿En cual restaurante desea comer?'),
-	input_to_list(Oracion2),
-	validacion_gramatical(Oracion2),
-    compareRest(Oracion2, RestTemp),
-	NombreRest = RestTemp,	
+	%nl, writeln('¿En cual restaurante desea comer?'),
+	%input_to_list(Oracion2),
+	%validacion_gramatical(Oracion2),
+    %compareRest(Oracion2, RestTemp),
+	%NombreRest = RestTemp,	
 
 	% Se busca la comida
-	nl, write('¿Cual comida de '), write(NombreRest), write(' desea?'), nl,
+	nl, write('¿Cual comida desea?'), nl, %write(NombreRest),
 	input_to_list(Oracion3),
 	validacion_gramatical(Oracion3),
 	compareComida(Oracion3, ComidaTemp),
@@ -270,7 +270,7 @@ pedirDatos(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDesea
 	TipoBebida = BebidaTemp,
 
 	% Se busca el lugar
-	nl, write('¿En cual provincia le gustaria buscar '), write(NombreRest), write(' ?'), nl,
+	nl, write('¿En cual provincia le gustaria buscar el restaurante? '), nl,
 	input_to_list(Oracion6),
 	validacion_gramatical(Oracion6),
 	compareLugar(Oracion6, LugarTemp),
@@ -284,7 +284,7 @@ pedirDatos(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDesea
 	CantidadDeseada = CantidadTemp,
 
 	% Se validan los datos y se busca la referencia en caso de existir
-	buscarRestauranteConDatosIngresados(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada).
+	buscarRestauranteConDatosIngresados(RestTemp, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada).
 
 % Descripción		:	Se verifican los datos ingresados por el usuario
 % Nombre de Hecho	:	verificarDatos(NombreRest, NombreIngresado, NombreIngresado2, SaborComida, SaboresDisponibles)
